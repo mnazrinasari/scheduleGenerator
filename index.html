@@ -211,6 +211,7 @@
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
             border-radius: 10px;
             overflow: hidden;
+            border: 1px solid #333;
         }
 
         .schedule-table th {
@@ -236,6 +237,10 @@
         .schedule-table tr:hover td {
             background: #e3f2fd;
             transition: background 0.3s ease;
+        }
+
+        .schedule-table tbody tr:last-child td {
+            border-bottom: 1px solid #333;
         }
 
         .notes-section {
@@ -560,7 +565,6 @@
             </div>
 
             <button class="btn" onclick="generateSchedule()">🎯 Generate Schedule</button>
-            <button class="btn" onclick="testDateSelection()" style="background: orange; margin-left: 10px;">🔍 Debug Date Selection</button>
         </div>
 
         <div class="schedule-section">
@@ -603,7 +607,7 @@
         <div class="export-section">
             <button class="btn btn-secondary" onclick="exportToPDF()">📄 Save as PDF</button>
             <p style="margin-top: 15px; color: #666; font-size: 14px;">
-                <strong>📋 For clean PDF:</strong> When print dialog opens, click "More settings" and uncheck "Headers and footers"
+                Click the button above to save this schedule as a PDF file
             </p>
         </div>
     </div>
