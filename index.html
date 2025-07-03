@@ -74,6 +74,26 @@
             font-size: 16px;
             transition: all 0.3s ease;
             background: white;
+            cursor: pointer;
+        }
+
+        .form-group select:hover {
+            border-color: #667eea;
+        }
+
+        .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .ganti-date option {
+            padding: 8px;
+            cursor: pointer;
+        }
+
+        .ganti-date option:hover {
+            background-color: #f0f0f0;
         }
 
         .form-group input:focus,
@@ -127,6 +147,18 @@
             gap: 15px;
             margin-bottom: 15px;
             align-items: end;
+        }
+
+        @media (max-width: 1200px) {
+            .ganti-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .ganti-grid {
+                grid-template-columns: 1fr;
+            }
         }
 
         .btn {
@@ -528,6 +560,7 @@
             </div>
 
             <button class="btn" onclick="generateSchedule()">🎯 Generate Schedule</button>
+            <button class="btn" onclick="testDateSelection()" style="background: orange; margin-left: 10px;">🔍 Debug Date Selection</button>
         </div>
 
         <div class="schedule-section">
@@ -570,7 +603,7 @@
         <div class="export-section">
             <button class="btn btn-secondary" onclick="exportToPDF()">📄 Save as PDF</button>
             <p style="margin-top: 15px; color: #666; font-size: 14px;">
-                Click the button above to save this schedule as a PDF file
+                <strong>📋 For clean PDF:</strong> When print dialog opens, click "More settings" and uncheck "Headers and footers"
             </p>
         </div>
     </div>
@@ -626,11 +659,22 @@
         }
 
         function populateDateOptions(selectElement, month, year) {
+            if (!selectElement) {
+                console.log('Date select element not found');
+                return;
+            }
+            
             selectElement.innerHTML = '<option value="">Select Date</option>';
             
-            if (month === '') return;
+            if (month === '' || month === undefined) {
+                console.log('No month selected');
+                return;
+            }
             
-            const daysInMonth = new Date(year, parseInt(month) + 1, 0).getDate();
+            const currentYear = year || new Date().getFullYear();
+            const daysInMonth = new Date(currentYear, parseInt(month) + 1, 0).getDate();
+            
+            console.log('Populating dates for month', month, 'year', currentYear, 'days:', daysInMonth);
             
             for (let day = 1; day <= daysInMonth; day++) {
                 const option = document.createElement('option');
@@ -638,18 +682,21 @@
                 option.textContent = String(day).padStart(2, '0');
                 selectElement.appendChild(option);
             }
+            
+            console.log('Added', daysInMonth, 'date options');
         }
 
         function updateGantiSelectors(numRows) {
             const container = document.getElementById('ganti-container');
             container.innerHTML = '';
             
+            let htmlContent = '';
             for (let i = 0; i < numRows; i++) {
                 const classNum = i + 1;
-                container.innerHTML += `
+                htmlContent += `
                     <div class="form-group">
                         <label>Class ${classNum} - Month</label>
-                        <select class="ganti-month" data-row="${i}" onchange="handleGantiChange(${i})">
+                        <select class="ganti-month" data-row="${i}" onchange="onMonthChange(${i})" onclick="console.log('Month clicked for row ${i}')">
                             <option value="">Select Month</option>
                             <option value="0">January</option>
                             <option value="1">February</option>
@@ -667,14 +714,14 @@
                     </div>
                     <div class="form-group">
                         <label>Class ${classNum} - Date</label>
-                        <select class="ganti-date" data-row="${i}" onchange="handleGantiChange(${i})">
+                        <select class="ganti-date" data-row="${i}" onchange="onDateChange(${i})" onclick="console.log('Date clicked for row ${i}')">
                             <option value="">Select Date</option>
                         </select>
                     </div>
                     <div class="form-group">
                         <label>Class ${classNum} - Start Time</label>
                         <div style="display: flex; gap: 5px;">
-                            <select class="ganti-start-hour" data-row="${i}" onchange="handleTimeChange(${i})">
+                            <select class="ganti-start-hour" data-row="${i}" onchange="onTimeChange(${i})">
                                 <option value="01">01</option>
                                 <option value="02">02</option>
                                 <option value="03" selected>03</option>
@@ -688,13 +735,13 @@
                                 <option value="11">11</option>
                                 <option value="12">12</option>
                             </select>
-                            <select class="ganti-start-minute" data-row="${i}" onchange="handleTimeChange(${i})">
+                            <select class="ganti-start-minute" data-row="${i}" onchange="onTimeChange(${i})">
                                 <option value="00" selected>00</option>
                                 <option value="15">15</option>
                                 <option value="30">30</option>
                                 <option value="45">45</option>
                             </select>
-                            <select class="ganti-start-ampm" data-row="${i}" onchange="handleTimeChange(${i})">
+                            <select class="ganti-start-ampm" data-row="${i}" onchange="onTimeChange(${i})">
                                 <option value="AM">AM</option>
                                 <option value="PM" selected>PM</option>
                             </select>
@@ -703,7 +750,7 @@
                     <div class="form-group">
                         <label>Class ${classNum} - End Time</label>
                         <div style="display: flex; gap: 5px;">
-                            <select class="ganti-end-hour" data-row="${i}" onchange="handleTimeChange(${i})">
+                            <select class="ganti-end-hour" data-row="${i}" onchange="onTimeChange(${i})">
                                 <option value="01">01</option>
                                 <option value="02">02</option>
                                 <option value="03">03</option>
@@ -717,13 +764,13 @@
                                 <option value="11">11</option>
                                 <option value="12">12</option>
                             </select>
-                            <select class="ganti-end-minute" data-row="${i}" onchange="handleTimeChange(${i})">
+                            <select class="ganti-end-minute" data-row="${i}" onchange="onTimeChange(${i})">
                                 <option value="00">00</option>
                                 <option value="15">15</option>
                                 <option value="30" selected>30</option>
                                 <option value="45">45</option>
                             </select>
-                            <select class="ganti-end-ampm" data-row="${i}" onchange="handleTimeChange(${i})">
+                            <select class="ganti-end-ampm" data-row="${i}" onchange="onTimeChange(${i})">
                                 <option value="AM">AM</option>
                                 <option value="PM" selected>PM</option>
                             </select>
@@ -731,24 +778,147 @@
                     </div>
                 `;
             }
+            
+            container.innerHTML = htmlContent;
+            console.log('Generated', numRows, 'rows of ganti selectors');
         }
 
-        function handleGantiChange(rowIndex) {
+        // Direct onclick handlers for more reliable event handling
+        function onMonthChange(rowIndex) {
+            console.log('onMonthChange called for row', rowIndex);
+            const monthSelect = document.querySelector(`.ganti-month[data-row="${rowIndex}"]`);
+            const dateSelect = document.querySelector(`.ganti-date[data-row="${rowIndex}"]`);
+            
+            if (monthSelect && dateSelect) {
+                console.log('Month value:', monthSelect.value);
+                
+                // Clear existing dates
+                dateSelect.innerHTML = '<option value="">Select Date</option>';
+                
+                if (monthSelect.value !== '') {
+                    const year = document.getElementById('year').value || new Date().getFullYear();
+                    const daysInMonth = new Date(year, parseInt(monthSelect.value) + 1, 0).getDate();
+                    
+                    console.log('Adding', daysInMonth, 'days for month', monthSelect.value);
+                    
+                    for (let day = 1; day <= daysInMonth; day++) {
+                        const option = document.createElement('option');
+                        option.value = day;
+                        option.textContent = String(day).padStart(2, '0');
+                        dateSelect.appendChild(option);
+                    }
+                    
+                    // Add visual feedback
+                    dateSelect.style.backgroundColor = '#e8f5e8';
+                    setTimeout(() => {
+                        dateSelect.style.backgroundColor = '';
+                    }, 1000);
+                }
+            }
+            
+            // Update display (but don't repopulate dates)
+            updateGantiDisplay(rowIndex);
+        }
+
+        function onDateChange(rowIndex) {
+            console.log('onDateChange called for row', rowIndex);
+            const dateSelect = document.querySelector(`.ganti-date[data-row="${rowIndex}"]`);
+            if (dateSelect) {
+                console.log('Selected date:', dateSelect.value);
+                
+                // Add visual feedback
+                dateSelect.style.backgroundColor = '#e8f5e8';
+                setTimeout(() => {
+                    dateSelect.style.backgroundColor = '';
+                }, 1000);
+            }
+            
+            // Only update display, don't repopulate dates
+            updateGantiDisplay(rowIndex);
+        }
+
+        function onTimeChange(rowIndex) {
+            console.log('onTimeChange called for row', rowIndex);
+            handleTimeChange(rowIndex);
+        }
+
+        // New function that only updates display without repopulating dates
+        function updateGantiDisplay(rowIndex) {
             const monthSelect = document.querySelector(`.ganti-month[data-row="${rowIndex}"]`);
             const dateSelect = document.querySelector(`.ganti-date[data-row="${rowIndex}"]`);
             const displayCell = document.getElementById(`ganti-display-${rowIndex}`);
             
-            if (monthSelect.value) {
-                const year = document.getElementById('year').value;
-                populateDateOptions(dateSelect, monthSelect.value, year);
+            if (monthSelect && dateSelect && displayCell) {
+                const selectedMonth = monthSelect.value;
+                const selectedDate = dateSelect.value;
+                
+                console.log('Updating display - Month:', selectedMonth, 'Date:', selectedDate);
+                
+                if (selectedMonth !== '' && selectedDate !== '') {
+                    const year = document.getElementById('year').value || new Date().getFullYear();
+                    const date = new Date(year, parseInt(selectedMonth), parseInt(selectedDate));
+                    const formattedDate = formatDate(date);
+                    
+                    displayCell.textContent = formattedDate;
+                    console.log('Display updated to:', formattedDate);
+                } else {
+                    displayCell.textContent = '';
+                    console.log('Display cleared');
+                }
+            }
+        }
+
+        function handleGantiChange(rowIndex) {
+            console.log('handleGantiChange called for row', rowIndex);
+            
+            const monthSelect = document.querySelector(`.ganti-month[data-row="${rowIndex}"]`);
+            const dateSelect = document.querySelector(`.ganti-date[data-row="${rowIndex}"]`);
+            const displayCell = document.getElementById(`ganti-display-${rowIndex}`);
+            
+            if (!monthSelect || !dateSelect) {
+                console.log('Month or date select not found for row', rowIndex);
+                return;
             }
             
-            if (monthSelect.value && dateSelect.value) {
-                const year = document.getElementById('year').value;
-                const date = new Date(year, parseInt(monthSelect.value), parseInt(dateSelect.value));
-                displayCell.textContent = formatDate(date);
+            const selectedMonth = monthSelect.value;
+            console.log('Selected month:', selectedMonth);
+            
+            // When month changes, populate dates
+            if (selectedMonth !== '') {
+                const year = document.getElementById('year').value || new Date().getFullYear();
+                console.log('Populating dates for month', selectedMonth, 'year', year);
+                
+                // Clear and repopulate date options
+                dateSelect.innerHTML = '<option value="">Select Date</option>';
+                const daysInMonth = new Date(year, parseInt(selectedMonth) + 1, 0).getDate();
+                
+                for (let day = 1; day <= daysInMonth; day++) {
+                    const option = document.createElement('option');
+                    option.value = day;
+                    option.textContent = String(day).padStart(2, '0');
+                    dateSelect.appendChild(option);
+                }
+                
+                console.log('Added', daysInMonth, 'date options to row', rowIndex);
             } else {
-                displayCell.textContent = '';
+                dateSelect.innerHTML = '<option value="">Select Date</option>';
+            }
+            
+            // Update display if both month and date are selected
+            const selectedDate = dateSelect.value;
+            if (selectedMonth !== '' && selectedDate !== '') {
+                const year = document.getElementById('year').value || new Date().getFullYear();
+                const date = new Date(year, parseInt(selectedMonth), parseInt(selectedDate));
+                const formattedDate = formatDate(date);
+                
+                if (displayCell) {
+                    displayCell.textContent = formattedDate;
+                    console.log('Updated display for row', rowIndex, ':', formattedDate);
+                }
+            } else {
+                if (displayCell) {
+                    displayCell.textContent = '';
+                }
             }
         }
 
@@ -775,8 +945,14 @@
             const dates = getAllDatesForDay(year, month, dayOfWeek);
             const tbody = document.getElementById('schedule-body');
             
+            // Preserve existing ganti selections before updating
+            const existingSelections = preserveGantiSelections();
+            
             // Update ganti selectors to match number of dates
             updateGantiSelectors(dates.length);
+            
+            // Restore previous selections
+            restoreGantiSelections(existingSelections);
             
             tbody.innerHTML = '';
             
@@ -794,94 +970,117 @@
                 
                 tbody.appendChild(row);
             });
+            
+            // Update displays based on restored selections
+            for (let i = 0; i < dates.length; i++) {
+                updateGantiDisplay(i);
+                handleTimeChange(i);
+            }
+        }
+
+        function preserveGantiSelections() {
+            const selections = [];
+            const container = document.getElementById('ganti-container');
+            
+            if (!container) return selections;
+            
+            const monthSelects = container.querySelectorAll('.ganti-month');
+            
+            monthSelects.forEach((monthSelect, index) => {
+                const rowIndex = parseInt(monthSelect.getAttribute('data-row'));
+                const dateSelect = container.querySelector(`.ganti-date[data-row="${rowIndex}"]`);
+                const startHour = container.querySelector(`.ganti-start-hour[data-row="${rowIndex}"]`);
+                const startMinute = container.querySelector(`.ganti-start-minute[data-row="${rowIndex}"]`);
+                const startAmpm = container.querySelector(`.ganti-start-ampm[data-row="${rowIndex}"]`);
+                const endHour = container.querySelector(`.ganti-end-hour[data-row="${rowIndex}"]`);
+                const endMinute = container.querySelector(`.ganti-end-minute[data-row="${rowIndex}"]`);
+                const endAmpm = container.querySelector(`.ganti-end-ampm[data-row="${rowIndex}"]`);
+                
+                selections[rowIndex] = {
+                    month: monthSelect.value,
+                    date: dateSelect ? dateSelect.value : '',
+                    startHour: startHour ? startHour.value : '03',
+                    startMinute: startMinute ? startMinute.value : '00',
+                    startAmpm: startAmpm ? startAmpm.value : 'PM',
+                    endHour: endHour ? endHour.value : '04',
+                    endMinute: endMinute ? endMinute.value : '30',
+                    endAmpm: endAmpm ? endAmpm.value : 'PM'
+                };
+            });
+            
+            console.log('Preserved selections:', selections);
+            return selections;
+        }
+
+        function restoreGantiSelections(selections) {
+            if (!selections || selections.length === 0) return;
+            
+            const container = document.getElementById('ganti-container');
+            if (!container) return;
+            
+            selections.forEach((selection, rowIndex) => {
+                if (!selection) return;
+                
+                const monthSelect = container.querySelector(`.ganti-month[data-row="${rowIndex}"]`);
+                const dateSelect = container.querySelector(`.ganti-date[data-row="${rowIndex}"]`);
+                const startHour = container.querySelector(`.ganti-start-hour[data-row="${rowIndex}"]`);
+                const startMinute = container.querySelector(`.ganti-start-minute[data-row="${rowIndex}"]`);
+                const startAmpm = container.querySelector(`.ganti-start-ampm[data-row="${rowIndex}"]`);
+                const endHour = container.querySelector(`.ganti-end-hour[data-row="${rowIndex}"]`);
+                const endMinute = container.querySelector(`.ganti-end-minute[data-row="${rowIndex}"]`);
+                const endAmpm = container.querySelector(`.ganti-end-ampm[data-row="${rowIndex}"]`);
+                
+                // Restore month selection
+                if (monthSelect && selection.month) {
+                    monthSelect.value = selection.month;
+                    
+                    // Populate dates for this month
+                    if (dateSelect) {
+                        const year = document.getElementById('year').value || new Date().getFullYear();
+                        const daysInMonth = new Date(year, parseInt(selection.month) + 1, 0).getDate();
+                        
+                        dateSelect.innerHTML = '<option value="">Select Date</option>';
+                        for (let day = 1; day <= daysInMonth; day++) {
+                            const option = document.createElement('option');
+                            option.value = day;
+                            option.textContent = String(day).padStart(2, '0');
+                            dateSelect.appendChild(option);
+                        }
+                        
+                        // Restore date selection
+                        if (selection.date) {
+                            dateSelect.value = selection.date;
+                        }
+                    }
+                }
+                
+                // Restore time selections
+                if (startHour) startHour.value = selection.startHour;
+                if (startMinute) startMinute.value = selection.startMinute;
+                if (startAmpm) startAmpm.value = selection.startAmpm;
+                if (endHour) endHour.value = selection.endHour;
+                if (endMinute) endMinute.value = selection.endMinute;
+                if (endAmpm) endAmpm.value = selection.endAmpm;
+            });
+            
+            console.log('Restored selections for', selections.length, 'rows');
         }
 
         function exportToPDF() {
-            // Create a new window for clean printing
-            const printWindow = window.open('', '_blank');
-            const scheduleContent = document.querySelector('.schedule-section').outerHTML;
-            const notesContent = document.querySelector('.notes-section').outerHTML;
+            // Show instruction alert first
+            alert(`📋 INSTRUCTIONS FOR CLEAN PDF:
+
+1. After clicking OK, the print dialog will open
+2. Click "More settings" at the bottom
+3. UNCHECK "Headers and footers"
+4. Click "Save" or "Print"
+
+This will give you a clean PDF without date/time headers!`);
             
-            printWindow.document.write(`
-                <!DOCTYPE html>
-                <html>
-                <head>
-                    <title></title>
-                    <style>
-                        @page {
-                            margin: 0.5in;
-                            size: A4;
-                        }
-                        body {
-                            font-family: Arial, sans-serif;
-                            font-size: 11px;
-                            margin: 0;
-                            padding: 0;
-                            background: white;
-                        }
-                        .schedule-section {
-                            padding: 0;
-                        }
-                        .schedule-header {
-                            margin-bottom: 15px;
-                        }
-                        .schedule-info {
-                            font-size: 11px;
-                            line-height: 1.3;
-                            display: flex;
-                            flex-direction: column;
-                            gap: 5px;
-                            font-weight: bold;
-                            color: #333;
-                        }
-                        .schedule-table {
-                            width: 100%;
-                            border-collapse: collapse;
-                            border: 1px solid #000;
-                            font-size: 10px;
-                        }
-                        .schedule-table th,
-                        .schedule-table td {
-                            border: 1px solid #000;
-                            padding: 6px 4px;
-                            text-align: center;
-                            background: white;
-                            color: black;
-                        }
-                        .schedule-table th {
-                            font-weight: bold;
-                        }
-                        .notes-section {
-                            background: white;
-                            border: none;
-                            padding: 15px 0;
-                        }
-                        .notes-list {
-                            font-size: 10px;
-                            line-height: 1.2;
-                            margin-top: 10px;
-                            list-style: decimal;
-                            padding-left: 20px;
-                        }
-                        .notes-list li {
-                            padding: 3px 0;
-                        }
-                    </style>
-                </head>
-                <body>
-                    ${scheduleContent}
-                    ${notesContent}
-                </body>
-                </html>
-            `);
-            
-            printWindow.document.close();
-            
-            // Wait for content to load then print
+            // Use simple print method
             setTimeout(() => {
-                printWindow.print();
-                printWindow.close();
-            }, 500);
+                window.print();
+            }, 1000);
         }
 
         // Add event listeners for real-time updates
@@ -899,9 +1098,86 @@
             document.getElementById('year').value = currentYear;
         }
 
+        // Debug function to test date selection
+        function testDateSelection() {
+            console.log('=== DEBUGGING DATE SELECTION ===');
+            
+            // Check if container exists
+            const container = document.getElementById('ganti-container');
+            console.log('Container found:', !!container);
+            
+            // Check for month selects
+            const monthSelects = container.querySelectorAll('.ganti-month');
+            console.log('Month selects found:', monthSelects.length);
+            
+            // Check for date selects
+            const dateSelects = container.querySelectorAll('.ganti-date');
+            console.log('Date selects found:', dateSelects.length);
+            
+            // Test first month select
+            if (monthSelects.length > 0) {
+                const firstMonth = monthSelects[0];
+                console.log('First month select value:', firstMonth.value);
+                console.log('First month select data-row:', firstMonth.getAttribute('data-row'));
+                
+                // Test date population manually
+                if (dateSelects.length > 0) {
+                    const firstDate = dateSelects[0];
+                    console.log('First date select options:', firstDate.options.length);
+                    
+                    // Manually populate dates for testing
+                    console.log('Manually populating dates...');
+                    firstDate.innerHTML = '<option value="">Select Date</option>';
+                    for (let day = 1; day <= 31; day++) {
+                        const option = document.createElement('option');
+                        option.value = day;
+                        option.textContent = String(day).padStart(2, '0');
+                        firstDate.appendChild(option);
+                    }
+                    console.log('After manual population, options:', firstDate.options.length);
+                }
+            }
+            
+            alert('Check console (F12) for debugging info!');
+        }
+
+        // Event delegation for ganti selectors (fixed to avoid conflicts)
+        function setupEventDelegation() {
+            const container = document.getElementById('ganti-container');
+            
+            container.addEventListener('change', function(event) {
+                console.log('=== CHANGE EVENT DETECTED ===');
+                console.log('Target element:', event.target);
+                console.log('Target classes:', event.target.className);
+                console.log('Target value:', event.target.value);
+                
+                const target = event.target;
+                const rowIndex = parseInt(target.getAttribute('data-row'));
+                console.log('Row index:', rowIndex);
+                
+                // Only handle time changes through event delegation
+                // Month and date changes are handled by inline handlers
+                if (target.classList.contains('ganti-start-hour') || 
+                    target.classList.contains('ganti-start-minute') || 
+                    target.classList.contains('ganti-start-ampm') ||
+                    target.classList.contains('ganti-end-hour') || 
+                    target.classList.contains('ganti-end-minute') || 
+                    target.classList.contains('ganti-end-ampm')) {
+                    console.log('Time change detected for row', rowIndex);
+                    handleTimeChange(rowIndex);
+                }
+                
+                // Skip month and date changes - they're handled by inline handlers
+                console.log('Skipping month/date handling in event delegation');
+            });
+            
+            console.log('Event delegation setup complete (time changes only)');
+        }
+
         // Initialize with current date and default values
         setCurrentDate();
         updateDisplayInfo();
+        setupEventDelegation();
     </script>
 </body>
 </html>
