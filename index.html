@@ -720,6 +720,17 @@
                     </select>
                 </div>
                 <div class="form-group">
+                    <label for="extra-frequency">FREQUENCY</label>
+                    <select id="extra-frequency">
+                        <option value="all" selected>All</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+                </div>
+                <div class="form-group">
                     <label>Extra Time Range</label>
                     <div class="time-container">
                         <div class="time-row">
@@ -922,8 +933,19 @@
             
             if (extraClassCheckbox.checked) {
                 const extraDayOfWeek = parseInt(document.getElementById('extra-day').value);
+                const extraFrequency = document.getElementById('extra-frequency').value;
                 extraTime = getExtraTimeString();
-                extraDates = getAllDatesForDay(year, month, extraDayOfWeek);
+                
+                // Get all available dates for the extra day
+                const allExtraDates = getAllDatesForDay(year, month, extraDayOfWeek);
+                
+                // Apply frequency filter
+                if (extraFrequency === 'all') {
+                    extraDates = allExtraDates;
+                } else {
+                    const numDates = parseInt(extraFrequency);
+                    extraDates = allExtraDates.slice(0, numDates);
+                }
             }
             
             // Combine all dates with their types and times
