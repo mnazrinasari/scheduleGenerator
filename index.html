@@ -77,16 +77,7 @@
             cursor: pointer;
         }
 
-        .form-group select:hover {
-            border-color: #667eea;
-        }
-
-        .form-group select:focus {
-            outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-        }
-
+        .form-group select:hover,
         .form-group input:focus,
         .form-group select:focus {
             outline: none;
@@ -111,16 +102,6 @@
             width: 100%;
             transition: all 0.3s ease;
             min-width: 60px;
-        }
-
-        .time-picker select:hover {
-            border-color: #667eea;
-        }
-
-        .time-picker select:focus {
-            outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
         }
 
         .time-picker span {
@@ -189,17 +170,39 @@
 
         .extra-day-controls {
             display: none;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            padding: 20px;
             background: #f0f8ff;
             border-radius: 10px;
             box-shadow: 0 4px 6px rgba(0,0,0,0.05);
             border-left: 4px solid #667eea;
+            padding: 20px;
+            margin-bottom: 20px;
         }
 
         .extra-day-controls.show {
+            display: block;
+        }
+
+        .extra-entry {
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        .extra-entry h4 {
+            margin: 0 0 15px 0;
+            color: #667eea;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .extra-entry-row {
             display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 15px;
+            align-items: start;
         }
 
         .btn {
@@ -219,10 +222,6 @@
         .btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 8px 15px rgba(102, 126, 234, 0.3);
-        }
-
-        .btn:active {
-            transform: translateY(0);
         }
 
         .btn-secondary {
@@ -280,10 +279,6 @@
             transition: background 0.3s ease;
         }
 
-        .schedule-table tbody tr:last-child td {
-            border-bottom: 1px solid #333;
-        }
-
         .notes-section {
             padding: 30px;
             background: #f8f9fa;
@@ -306,12 +301,16 @@
             background: white;
         }
 
-        /* Print styles for PDF export */
-        @page {
-            margin: 0.5in;
-            size: A4;
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
         }
 
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Print styles */
         @media print {
             * {
                 -webkit-print-color-adjust: exact !important;
@@ -343,49 +342,12 @@
                 display: none !important;
             }
 
-            .notes-section {
-                page-break-before: avoid;
-                background: white !important;
-                border: none;
-                padding: 20px 0;
-            }
-
-            .schedule-section {
-                padding: 0;
-                background: white;
-            }
-
-            .schedule-header {
-                margin-bottom: 20px;
-            }
-
-            .schedule-info {
-                font-size: 14px;
-                line-height: 1.4;
-                color: #000;
-                font-weight: bold;
-            }
-
-            .schedule-table {
-                box-shadow: none;
-                border-radius: 0;
-                border-collapse: collapse;
-                border: 2px solid #000;
-                width: 100%;
-                font-size: 12px;
-            }
-
             .schedule-table th {
                 background: white !important;
                 color: #000 !important;
                 border: 1px solid #000 !important;
                 padding: 6px 4px !important;
-                font-weight: bold;
-                text-align: center;
                 height: 25px;
-                -webkit-print-color-adjust: exact !important;
-                color-adjust: exact !important;
-                print-color-adjust: exact !important;
             }
 
             .schedule-table td {
@@ -393,91 +355,20 @@
                 color: #000 !important;
                 border: 1px solid #000 !important;
                 padding: 6px 4px !important;
-                text-align: center;
                 height: 20px;
-                -webkit-print-color-adjust: exact !important;
-                color-adjust: exact !important;
-                print-color-adjust: exact !important;
             }
 
             .schedule-table tr.extra-class td {
                 background: #d3d3d3 !important;
                 color: #000 !important;
-                -webkit-print-color-adjust: exact !important;
-                color-adjust: exact !important;
-                print-color-adjust: exact !important;
-            }
-
-            .schedule-table tr:nth-child(even) td {
-                background: white !important;
-            }
-
-            .schedule-table tr:nth-child(odd) td {
-                background: white !important;
-            }
-
-            .schedule-table tr.extra-class:nth-child(even) td,
-            .schedule-table tr.extra-class:nth-child(odd) td {
-                background: #d3d3d3 !important;
-                -webkit-print-color-adjust: exact !important;
-                color-adjust: exact !important;
-                print-color-adjust: exact !important;
-            }
-
-            .notes-list {
-                font-size: 12px;
-                line-height: 1.4;
-                margin-top: 15px;
-                color: #000;
-            }
-
-            .notes-list li {
-                padding: 5px 0;
-            }
-
-            .notes-list strong {
-                font-weight: bold;
-                color: #000;
             }
         }
 
-        .fade-in {
-            animation: fadeIn 0.5s ease-in;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Mobile optimizations */
+        /* Mobile styles */
         @media (max-width: 768px) {
-            .form-row {
+            .form-row, .date-controls {
                 grid-template-columns: 1fr;
                 gap: 15px;
-            }
-
-            .date-controls {
-                grid-template-columns: 1fr;
-                gap: 15px;
-            }
-
-            .time-container {
-                gap: 12px;
-            }
-
-            .time-row {
-                display: flex;
-                align-items: center;
-                gap: 8px;
-            }
-
-            .time-label {
-                font-weight: bold;
-                color: #333;
-                min-width: 45px;
-                text-align: left;
-                font-size: 14px;
             }
 
             .time-picker {
@@ -495,80 +386,9 @@
                 flex: 1;
             }
 
-            .time-picker span {
-                font-size: 14px;
-                padding: 0 3px;
-                min-width: 8px;
-            }
-
-            .container {
-                margin: 10px;
-                border-radius: 10px;
-            }
-
-            .header {
-                padding: 20px;
-            }
-
-            .header h1 {
-                font-size: 2em;
-            }
-
-            .form-section {
-                padding: 20px;
-            }
-
-            .schedule-section {
-                padding: 15px;
-            }
-
-            .schedule-table {
-                font-size: 12px;
-            }
-
-            .schedule-table th,
-            .schedule-table td {
-                padding: 8px 4px;
-            }
-
-            .export-section {
-                padding: 20px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .time-picker select {
-                padding: 6px 2px;
-                font-size: 12px;
-                min-width: 45px;
-                max-width: 60px;
-            }
-
-            .time-picker span {
-                font-size: 12px;
-            }
-
-            .time-label {
-                min-width: 40px;
-                font-size: 13px;
-            }
-
-            .schedule-table th,
-            .schedule-table td {
-                padding: 6px 2px;
-                font-size: 10px;
-            }
-
-            .form-group input,
-            .form-group select {
-                padding: 12px 10px;
-                font-size: 16px;
-            }
-
-            .btn {
-                padding: 12px 16px;
-                font-size: 16px;
-                width: 100%;
+            .extra-entry-row {
+                grid-template-columns: 1fr;
+                gap: 10px;
             }
         }
     </style>
@@ -704,92 +524,18 @@
 
             <div class="extra-day-controls" id="extra-day-controls">
                 <div class="form-group">
-                    <label for="extra-day">Extra Day of Week</label>
-                    <select id="extra-day">
-                        <option value="0">AHAD (Sunday)</option>
-                        <option value="1">ISNIN (Monday)</option>
-                        <option value="2">SELASA (Tuesday)</option>
-                        <option value="3">RABU (Wednesday)</option>
-                        <option value="4" selected>KHAMIS (Thursday)</option>
-                        <option value="5">JUMAAT (Friday)</option>
-                        <option value="6">SABTU (Saturday)</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="extra-frequency">FREQUENCY</label>
-                    <select id="extra-frequency">
-                        <option value="all" selected>All</option>
-                        <option value="1">1</option>
+                    <label for="extra-frequency">NUMBER OF EXTRA CLASSES</label>
+                    <select id="extra-frequency" onchange="updateExtraEntries()">
+                        <option value="1" selected>1</option>
                         <option value="2">2</option>
                         <option value="3">3</option>
                         <option value="4">4</option>
                         <option value="5">5</option>
                     </select>
                 </div>
-                <div class="form-group">
-                    <label>Extra Time Range</label>
-                    <div class="time-container">
-                        <div class="time-row">
-                            <span class="time-label">Start:</span>
-                            <div class="time-picker">
-                                <select id="extra-start-hour">
-                                    <option value="01">01</option>
-                                    <option value="02">02</option>
-                                    <option value="03">03</option>
-                                    <option value="04">04</option>
-                                    <option value="05" selected>05</option>
-                                    <option value="06">06</option>
-                                    <option value="07">07</option>
-                                    <option value="08">08</option>
-                                    <option value="09">09</option>
-                                    <option value="10">10</option>
-                                    <option value="11">11</option>
-                                    <option value="12">12</option>
-                                </select>
-                                <span>:</span>
-                                <select id="extra-start-minute">
-                                    <option value="00" selected>00</option>
-                                    <option value="15">15</option>
-                                    <option value="30">30</option>
-                                    <option value="45">45</option>
-                                </select>
-                                <select id="extra-start-ampm">
-                                    <option value="AM">AM</option>
-                                    <option value="PM" selected>PM</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="time-row">
-                            <span class="time-label">End:</span>
-                            <div class="time-picker">
-                                <select id="extra-end-hour">
-                                    <option value="01">01</option>
-                                    <option value="02">02</option>
-                                    <option value="03">03</option>
-                                    <option value="04">04</option>
-                                    <option value="05">05</option>
-                                    <option value="06" selected>06</option>
-                                    <option value="07">07</option>
-                                    <option value="08">08</option>
-                                    <option value="09">09</option>
-                                    <option value="10">10</option>
-                                    <option value="11">11</option>
-                                    <option value="12">12</option>
-                                </select>
-                                <span>:</span>
-                                <select id="extra-end-minute">
-                                    <option value="00">00</option>
-                                    <option value="15">15</option>
-                                    <option value="30" selected>30</option>
-                                    <option value="45">45</option>
-                                </select>
-                                <select id="extra-end-ampm">
-                                    <option value="AM">AM</option>
-                                    <option value="PM" selected>PM</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
+                
+                <div id="extra-entries-container">
+                    <!-- Extra entries will be dynamically generated here -->
                 </div>
             </div>
 
@@ -875,7 +621,7 @@
             const year = date.getFullYear();
             const dayName = dayNames[date.getDay()];
             
-            return `${day} ${month} ${year} | ${dayName}`;
+            return day + ' ' + month + ' ' + year + ' | ' + dayName;
         }
 
         function getDefaultTimeString() {
@@ -886,18 +632,7 @@
             const endMinute = document.getElementById('end-minute').value;
             const endAmpm = document.getElementById('end-ampm').value;
             
-            return `${startHour}:${startMinute}${startAmpm}-${endHour}:${endMinute}${endAmpm}`;
-        }
-
-        function getExtraTimeString() {
-            const startHour = document.getElementById('extra-start-hour').value;
-            const startMinute = document.getElementById('extra-start-minute').value;
-            const startAmpm = document.getElementById('extra-start-ampm').value;
-            const endHour = document.getElementById('extra-end-hour').value;
-            const endMinute = document.getElementById('extra-end-minute').value;
-            const endAmpm = document.getElementById('extra-end-ampm').value;
-            
-            return `${startHour}:${startMinute}${startAmpm}-${endHour}:${endMinute}${endAmpm}`;
+            return startHour + ':' + startMinute + startAmpm + '-' + endHour + ':' + endMinute + endAmpm;
         }
 
         function toggleExtraClass() {
@@ -906,8 +641,105 @@
             
             if (checkbox.checked) {
                 extraControls.classList.add('show');
+                updateExtraEntries();
             } else {
                 extraControls.classList.remove('show');
+            }
+        }
+
+        function updateExtraEntries() {
+            const numEntries = parseInt(document.getElementById('extra-frequency').value);
+            const container = document.getElementById('extra-entries-container');
+            
+            container.innerHTML = '';
+            
+            for (let i = 0; i < numEntries; i++) {
+                const entryDiv = document.createElement('div');
+                entryDiv.className = 'extra-entry';
+                
+                entryDiv.innerHTML = 
+                    '<h4>Extra Class ' + (i + 1) + '</h4>' +
+                    '<div class="extra-entry-row">' +
+                        '<div class="form-group">' +
+                            '<label>Day of Week</label>' +
+                            '<select id="extra-day-' + i + '">' +
+                                '<option value="0">AHAD (Sunday)</option>' +
+                                '<option value="1">ISNIN (Monday)</option>' +
+                                '<option value="2">SELASA (Tuesday)</option>' +
+                                '<option value="3">RABU (Wednesday)</option>' +
+                                '<option value="4" selected>KHAMIS (Thursday)</option>' +
+                                '<option value="5">JUMAAT (Friday)</option>' +
+                                '<option value="6">SABTU (Saturday)</option>' +
+                            '</select>' +
+                        '</div>' +
+                        '<div class="form-group">' +
+                            '<label>Time Range</label>' +
+                            '<div class="time-container">' +
+                                '<div class="time-row">' +
+                                    '<span class="time-label">Start:</span>' +
+                                    '<div class="time-picker">' +
+                                        '<select id="extra-start-hour-' + i + '">' +
+                                            '<option value="01">01</option>' +
+                                            '<option value="02">02</option>' +
+                                            '<option value="03">03</option>' +
+                                            '<option value="04">04</option>' +
+                                            '<option value="05" selected>05</option>' +
+                                            '<option value="06">06</option>' +
+                                            '<option value="07">07</option>' +
+                                            '<option value="08">08</option>' +
+                                            '<option value="09">09</option>' +
+                                            '<option value="10">10</option>' +
+                                            '<option value="11">11</option>' +
+                                            '<option value="12">12</option>' +
+                                        '</select>' +
+                                        '<span>:</span>' +
+                                        '<select id="extra-start-minute-' + i + '">' +
+                                            '<option value="00" selected>00</option>' +
+                                            '<option value="15">15</option>' +
+                                            '<option value="30">30</option>' +
+                                            '<option value="45">45</option>' +
+                                        '</select>' +
+                                        '<select id="extra-start-ampm-' + i + '">' +
+                                            '<option value="AM">AM</option>' +
+                                            '<option value="PM" selected>PM</option>' +
+                                        '</select>' +
+                                    '</div>' +
+                                '</div>' +
+                                '<div class="time-row">' +
+                                    '<span class="time-label">End:</span>' +
+                                    '<div class="time-picker">' +
+                                        '<select id="extra-end-hour-' + i + '">' +
+                                            '<option value="01">01</option>' +
+                                            '<option value="02">02</option>' +
+                                            '<option value="03">03</option>' +
+                                            '<option value="04">04</option>' +
+                                            '<option value="05">05</option>' +
+                                            '<option value="06" selected>06</option>' +
+                                            '<option value="07">07</option>' +
+                                            '<option value="08">08</option>' +
+                                            '<option value="09">09</option>' +
+                                            '<option value="10">10</option>' +
+                                            '<option value="11">11</option>' +
+                                            '<option value="12">12</option>' +
+                                        '</select>' +
+                                        '<span>:</span>' +
+                                        '<select id="extra-end-minute-' + i + '">' +
+                                            '<option value="00">00</option>' +
+                                            '<option value="15">15</option>' +
+                                            '<option value="30" selected>30</option>' +
+                                            '<option value="45">45</option>' +
+                                        '</select>' +
+                                        '<select id="extra-end-ampm-' + i + '">' +
+                                            '<option value="AM">AM</option>' +
+                                            '<option value="PM" selected>PM</option>' +
+                                        '</select>' +
+                                    '</div>' +
+                                '</div>' +
+                            '</div>' +
+                        '</div>' +
+                    '</div>';
+                
+                container.appendChild(entryDiv);
             }
         }
 
@@ -922,33 +754,10 @@
             const dates = getAllDatesForDay(year, month, dayOfWeek);
             const tbody = document.getElementById('schedule-body');
             
-            // Get extra classes if checkbox is checked
-            const extraClassCheckbox = document.getElementById('extra-class');
-            let extraDates = [];
-            let extraTime = '';
-            
-            if (extraClassCheckbox.checked) {
-                const extraDayOfWeek = parseInt(document.getElementById('extra-day').value);
-                const extraFrequency = document.getElementById('extra-frequency').value;
-                extraTime = getExtraTimeString();
-                
-                // Get all available dates for the extra day
-                const allExtraDates = getAllDatesForDay(year, month, extraDayOfWeek);
-                
-                // Apply frequency filter
-                if (extraFrequency === 'all') {
-                    extraDates = allExtraDates;
-                } else {
-                    const numDates = parseInt(extraFrequency);
-                    extraDates = allExtraDates.slice(0, numDates);
-                }
-            }
-            
-            // Combine all dates with their types and times
             const allEvents = [];
             
             // Add regular classes
-            dates.forEach(date => {
+            dates.forEach(function(date) {
                 allEvents.push({
                     date: date,
                     time: defaultTime,
@@ -956,34 +765,58 @@
                 });
             });
             
-            // Add extra classes
-            extraDates.forEach(date => {
-                allEvents.push({
-                    date: date,
-                    time: extraTime,
-                    isExtra: true
-                });
-            });
+            // Get extra classes if checkbox is checked
+            const extraClassCheckbox = document.getElementById('extra-class');
+            if (extraClassCheckbox.checked) {
+                const numEntries = parseInt(document.getElementById('extra-frequency').value);
+                
+                for (let i = 0; i < numEntries; i++) {
+                    const daySelect = document.getElementById('extra-day-' + i);
+                    const startHour = document.getElementById('extra-start-hour-' + i);
+                    const startMinute = document.getElementById('extra-start-minute-' + i);
+                    const startAmpm = document.getElementById('extra-start-ampm-' + i);
+                    const endHour = document.getElementById('extra-end-hour-' + i);
+                    const endMinute = document.getElementById('extra-end-minute-' + i);
+                    const endAmpm = document.getElementById('extra-end-ampm-' + i);
+                    
+                    if (daySelect && startHour && startMinute && startAmpm && endHour && endMinute && endAmpm) {
+                        const extraDayOfWeek = parseInt(daySelect.value);
+                        const extraTime = startHour.value + ':' + startMinute.value + startAmpm.value + '-' + endHour.value + ':' + endMinute.value + endAmpm.value;
+                        
+                        const extraDates = getAllDatesForDay(year, month, extraDayOfWeek);
+                        if (extraDates.length > 0) {
+                            const extraDate = extraDates[Math.min(i, extraDates.length - 1)];
+                            
+                            allEvents.push({
+                                date: extraDate,
+                                time: extraTime,
+                                isExtra: true
+                            });
+                        }
+                    }
+                }
+            }
             
             // Sort all events by date
-            allEvents.sort((a, b) => a.date.getTime() - b.date.getTime());
+            allEvents.sort(function(a, b) {
+                return a.date.getTime() - b.date.getTime();
+            });
             
             // Clear and populate table
             tbody.innerHTML = '';
             
-            allEvents.forEach((event, index) => {
+            allEvents.forEach(function(event, index) {
                 const row = document.createElement('tr');
                 row.className = 'fade-in';
                 if (event.isExtra) {
                     row.classList.add('extra-class');
                 }
-                row.style.animationDelay = `${index * 0.1}s`;
+                row.style.animationDelay = (index * 0.1) + 's';
                 
-                row.innerHTML = `
-                    <td>${index + 1}</td>
-                    <td>${formatDate(event.date)}</td>
-                    <td>${event.time}</td>
-                `;
+                row.innerHTML = 
+                    '<td>' + (index + 1) + '</td>' +
+                    '<td>' + formatDate(event.date) + '</td>' +
+                    '<td>' + event.time + '</td>';
                 
                 tbody.appendChild(row);
             });
@@ -993,24 +826,28 @@
             window.print();
         }
 
-        // Add event listeners for real-time updates
-        document.getElementById('nama').addEventListener('input', updateDisplayInfo);
-        document.getElementById('level').addEventListener('input', updateDisplayInfo);
-        document.getElementById('subjek').addEventListener('input', updateDisplayInfo);
-
-        // Auto-set current month and year
         function setCurrentDate() {
             const now = new Date();
-            const currentMonth = now.getMonth(); // 0-11
+            const currentMonth = now.getMonth();
             const currentYear = now.getFullYear();
             
             document.getElementById('month').value = currentMonth;
             document.getElementById('year').value = currentYear;
         }
 
+        // Add event listeners for real-time updates
+        document.getElementById('nama').addEventListener('input', updateDisplayInfo);
+        document.getElementById('level').addEventListener('input', updateDisplayInfo);
+        document.getElementById('subjek').addEventListener('input', updateDisplayInfo);
+
         // Initialize with current date and default values
         setCurrentDate();
         updateDisplayInfo();
+        
+        // Initialize extra entries when page loads
+        setTimeout(function() {
+            updateExtraEntries();
+        }, 100);
     </script>
 </body>
 </html>
