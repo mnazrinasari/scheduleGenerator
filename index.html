@@ -190,8 +190,53 @@
             margin-bottom: 15px;
         }
 
-        .extra-entry h4 {
-            margin: 0 0 15px 0;
+        .btn-add {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-add:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(40, 167, 69, 0.3);
+        }
+
+        .btn-remove {
+            background: linear-gradient(135deg, #dc3545 0%, #e74c3c 100%);
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-remove:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(220, 53, 69, 0.3);
+        }
+
+        .extra-entry-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .extra-entry-header h4 {
+            margin: 0;
             color: #667eea;
             font-size: 14px;
             text-transform: uppercase;
@@ -200,7 +245,7 @@
 
         .extra-entry-row {
             display: grid;
-            grid-template-columns: 1fr 2fr;
+            grid-template-columns: 1fr 1fr 1fr 2fr;
             gap: 15px;
             align-items: start;
         }
@@ -523,15 +568,9 @@
             </div>
 
             <div class="extra-day-controls" id="extra-day-controls">
-                <div class="form-group">
-                    <label for="extra-frequency">NUMBER OF EXTRA CLASSES</label>
-                    <select id="extra-frequency" onchange="updateExtraEntries()">
-                        <option value="1" selected>1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                    </select>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h3 style="margin: 0; color: #667eea; font-size: 16px; text-transform: uppercase; letter-spacing: 1px;">Extra Classes</h3>
+                    <button type="button" class="btn-add" onclick="addExtraEntry()">+ Add Extra Class</button>
                 </div>
                 
                 <div id="extra-entries-container">
@@ -635,112 +674,151 @@
             return startHour + ':' + startMinute + startAmpm + '-' + endHour + ':' + endMinute + endAmpm;
         }
 
+        let extraClassCounter = 0;
+
         function toggleExtraClass() {
             const checkbox = document.getElementById('extra-class');
             const extraControls = document.getElementById('extra-day-controls');
             
             if (checkbox.checked) {
                 extraControls.classList.add('show');
-                updateExtraEntries();
+                // Add first entry if none exist
+                if (extraClassCounter === 0) {
+                    addExtraEntry();
+                }
             } else {
                 extraControls.classList.remove('show');
+                // Clear all entries when unchecked
+                document.getElementById('extra-entries-container').innerHTML = '';
+                extraClassCounter = 0;
+            }
+        }
+
+        function addExtraEntry() {
+            const container = document.getElementById('extra-entries-container');
+            extraClassCounter++;
+            
+            const entryDiv = document.createElement('div');
+            entryDiv.className = 'extra-entry';
+            entryDiv.id = 'extra-entry-' + extraClassCounter;
+            
+            entryDiv.innerHTML = 
+                '<div class="extra-entry-header">' +
+                    '<h4>Extra Class ' + extraClassCounter + '</h4>' +
+                    '<button type="button" class="btn-remove" onclick="removeExtraEntry(' + extraClassCounter + ')">Remove</button>' +
+                '</div>' +
+                '<div class="extra-entry-row">' +
+                    '<div class="form-group">' +
+                        '<label>Day of Week</label>' +
+                        '<select id="extra-day-' + extraClassCounter + '">' +
+                            '<option value="0">AHAD (Sunday)</option>' +
+                            '<option value="1">ISNIN (Monday)</option>' +
+                            '<option value="2">SELASA (Tuesday)</option>' +
+                            '<option value="3">RABU (Wednesday)</option>' +
+                            '<option value="4" selected>KHAMIS (Thursday)</option>' +
+                            '<option value="5">JUMAAT (Friday)</option>' +
+                            '<option value="6">SABTU (Saturday)</option>' +
+                        '</select>' +
+                    '</div>' +
+                    '<div class="form-group">' +
+                        '<label>Start From</label>' +
+                        '<select id="extra-start-occurrence-' + extraClassCounter + '">' +
+                            '<option value="1" selected>1st Occurrence</option>' +
+                            '<option value="2">2nd Occurrence</option>' +
+                            '<option value="3">3rd Occurrence</option>' +
+                            '<option value="4">4th Occurrence</option>' +
+                            '<option value="5">5th Occurrence</option>' +
+                        '</select>' +
+                    '</div>' +
+                    '<div class="form-group">' +
+                        '<label>Frequency</label>' +
+                        '<select id="extra-frequency-' + extraClassCounter + '">' +
+                            '<option value="1" selected>1 Time</option>' +
+                            '<option value="2">2 Times</option>' +
+                            '<option value="3">3 Times</option>' +
+                            '<option value="4">4 Times</option>' +
+                            '<option value="5">All Remaining</option>' +
+                        '</select>' +
+                    '</div>' +
+                    '<div class="form-group">' +
+                        '<label>Time Range</label>' +
+                        '<div class="time-container">' +
+                            '<div class="time-row">' +
+                                '<span class="time-label">Start:</span>' +
+                                '<div class="time-picker">' +
+                                    '<select id="extra-start-hour-' + extraClassCounter + '">' +
+                                        '<option value="01">01</option>' +
+                                        '<option value="02">02</option>' +
+                                        '<option value="03">03</option>' +
+                                        '<option value="04">04</option>' +
+                                        '<option value="05" selected>05</option>' +
+                                        '<option value="06">06</option>' +
+                                        '<option value="07">07</option>' +
+                                        '<option value="08">08</option>' +
+                                        '<option value="09">09</option>' +
+                                        '<option value="10">10</option>' +
+                                        '<option value="11">11</option>' +
+                                        '<option value="12">12</option>' +
+                                    '</select>' +
+                                    '<span>:</span>' +
+                                    '<select id="extra-start-minute-' + extraClassCounter + '">' +
+                                        '<option value="00" selected>00</option>' +
+                                        '<option value="15">15</option>' +
+                                        '<option value="30">30</option>' +
+                                        '<option value="45">45</option>' +
+                                    '</select>' +
+                                    '<select id="extra-start-ampm-' + extraClassCounter + '">' +
+                                        '<option value="AM">AM</option>' +
+                                        '<option value="PM" selected>PM</option>' +
+                                    '</select>' +
+                                '</div>' +
+                            '</div>' +
+                            '<div class="time-row">' +
+                                '<span class="time-label">End:</span>' +
+                                '<div class="time-picker">' +
+                                    '<select id="extra-end-hour-' + extraClassCounter + '">' +
+                                        '<option value="01">01</option>' +
+                                        '<option value="02">02</option>' +
+                                        '<option value="03">03</option>' +
+                                        '<option value="04">04</option>' +
+                                        '<option value="05">05</option>' +
+                                        '<option value="06" selected>06</option>' +
+                                        '<option value="07">07</option>' +
+                                        '<option value="08">08</option>' +
+                                        '<option value="09">09</option>' +
+                                        '<option value="10">10</option>' +
+                                        '<option value="11">11</option>' +
+                                        '<option value="12">12</option>' +
+                                    '</select>' +
+                                    '<span>:</span>' +
+                                    '<select id="extra-end-minute-' + extraClassCounter + '">' +
+                                        '<option value="00">00</option>' +
+                                        '<option value="15">15</option>' +
+                                        '<option value="30" selected>30</option>' +
+                                        '<option value="45">45</option>' +
+                                    '</select>' +
+                                    '<select id="extra-end-ampm-' + extraClassCounter + '">' +
+                                        '<option value="AM">AM</option>' +
+                                        '<option value="PM" selected>PM</option>' +
+                                    '</select>' +
+                                '</div>' +
+                            '</div>' +
+                        '</div>' +
+                    '</div>' +
+                '</div>';
+            
+            container.appendChild(entryDiv);
+        }
+
+        function removeExtraEntry(entryId) {
+            const entryElement = document.getElementById('extra-entry-' + entryId);
+            if (entryElement) {
+                entryElement.remove();
             }
         }
 
         function updateExtraEntries() {
-            const numEntries = parseInt(document.getElementById('extra-frequency').value);
-            const container = document.getElementById('extra-entries-container');
-            
-            container.innerHTML = '';
-            
-            for (let i = 0; i < numEntries; i++) {
-                const entryDiv = document.createElement('div');
-                entryDiv.className = 'extra-entry';
-                
-                entryDiv.innerHTML = 
-                    '<h4>Extra Class ' + (i + 1) + '</h4>' +
-                    '<div class="extra-entry-row">' +
-                        '<div class="form-group">' +
-                            '<label>Day of Week</label>' +
-                            '<select id="extra-day-' + i + '">' +
-                                '<option value="0">AHAD (Sunday)</option>' +
-                                '<option value="1">ISNIN (Monday)</option>' +
-                                '<option value="2">SELASA (Tuesday)</option>' +
-                                '<option value="3">RABU (Wednesday)</option>' +
-                                '<option value="4" selected>KHAMIS (Thursday)</option>' +
-                                '<option value="5">JUMAAT (Friday)</option>' +
-                                '<option value="6">SABTU (Saturday)</option>' +
-                            '</select>' +
-                        '</div>' +
-                        '<div class="form-group">' +
-                            '<label>Time Range</label>' +
-                            '<div class="time-container">' +
-                                '<div class="time-row">' +
-                                    '<span class="time-label">Start:</span>' +
-                                    '<div class="time-picker">' +
-                                        '<select id="extra-start-hour-' + i + '">' +
-                                            '<option value="01">01</option>' +
-                                            '<option value="02">02</option>' +
-                                            '<option value="03">03</option>' +
-                                            '<option value="04">04</option>' +
-                                            '<option value="05" selected>05</option>' +
-                                            '<option value="06">06</option>' +
-                                            '<option value="07">07</option>' +
-                                            '<option value="08">08</option>' +
-                                            '<option value="09">09</option>' +
-                                            '<option value="10">10</option>' +
-                                            '<option value="11">11</option>' +
-                                            '<option value="12">12</option>' +
-                                        '</select>' +
-                                        '<span>:</span>' +
-                                        '<select id="extra-start-minute-' + i + '">' +
-                                            '<option value="00" selected>00</option>' +
-                                            '<option value="15">15</option>' +
-                                            '<option value="30">30</option>' +
-                                            '<option value="45">45</option>' +
-                                        '</select>' +
-                                        '<select id="extra-start-ampm-' + i + '">' +
-                                            '<option value="AM">AM</option>' +
-                                            '<option value="PM" selected>PM</option>' +
-                                        '</select>' +
-                                    '</div>' +
-                                '</div>' +
-                                '<div class="time-row">' +
-                                    '<span class="time-label">End:</span>' +
-                                    '<div class="time-picker">' +
-                                        '<select id="extra-end-hour-' + i + '">' +
-                                            '<option value="01">01</option>' +
-                                            '<option value="02">02</option>' +
-                                            '<option value="03">03</option>' +
-                                            '<option value="04">04</option>' +
-                                            '<option value="05">05</option>' +
-                                            '<option value="06" selected>06</option>' +
-                                            '<option value="07">07</option>' +
-                                            '<option value="08">08</option>' +
-                                            '<option value="09">09</option>' +
-                                            '<option value="10">10</option>' +
-                                            '<option value="11">11</option>' +
-                                            '<option value="12">12</option>' +
-                                        '</select>' +
-                                        '<span>:</span>' +
-                                        '<select id="extra-end-minute-' + i + '">' +
-                                            '<option value="00">00</option>' +
-                                            '<option value="15">15</option>' +
-                                            '<option value="30" selected>30</option>' +
-                                            '<option value="45">45</option>' +
-                                        '</select>' +
-                                        '<select id="extra-end-ampm-' + i + '">' +
-                                            '<option value="AM">AM</option>' +
-                                            '<option value="PM" selected>PM</option>' +
-                                        '</select>' +
-                                    '</div>' +
-                                '</div>' +
-                            '</div>' +
-                        '</div>' +
-                    '</div>';
-                
-                container.appendChild(entryDiv);
-            }
+            // This function is no longer needed but kept for compatibility
         }
 
         function generateSchedule() {
@@ -768,33 +846,49 @@
             // Get extra classes if checkbox is checked
             const extraClassCheckbox = document.getElementById('extra-class');
             if (extraClassCheckbox.checked) {
-                const numEntries = parseInt(document.getElementById('extra-frequency').value);
+                const container = document.getElementById('extra-entries-container');
+                const extraEntries = container.querySelectorAll('.extra-entry');
                 
-                for (let i = 0; i < numEntries; i++) {
-                    const daySelect = document.getElementById('extra-day-' + i);
-                    const startHour = document.getElementById('extra-start-hour-' + i);
-                    const startMinute = document.getElementById('extra-start-minute-' + i);
-                    const startAmpm = document.getElementById('extra-start-ampm-' + i);
-                    const endHour = document.getElementById('extra-end-hour-' + i);
-                    const endMinute = document.getElementById('extra-end-minute-' + i);
-                    const endAmpm = document.getElementById('extra-end-ampm-' + i);
+                extraEntries.forEach(function(entry) {
+                    const entryId = entry.id.split('-')[2]; // Get the counter number
+                    const daySelect = document.getElementById('extra-day-' + entryId);
+                    const startOccurrence = document.getElementById('extra-start-occurrence-' + entryId);
+                    const frequency = document.getElementById('extra-frequency-' + entryId);
+                    const startHour = document.getElementById('extra-start-hour-' + entryId);
+                    const startMinute = document.getElementById('extra-start-minute-' + entryId);
+                    const startAmpm = document.getElementById('extra-start-ampm-' + entryId);
+                    const endHour = document.getElementById('extra-end-hour-' + entryId);
+                    const endMinute = document.getElementById('extra-end-minute-' + entryId);
+                    const endAmpm = document.getElementById('extra-end-ampm-' + entryId);
                     
-                    if (daySelect && startHour && startMinute && startAmpm && endHour && endMinute && endAmpm) {
+                    if (daySelect && startOccurrence && frequency && startHour && startMinute && startAmpm && endHour && endMinute && endAmpm) {
                         const extraDayOfWeek = parseInt(daySelect.value);
+                        const startFrom = parseInt(startOccurrence.value) - 1; // Convert to 0-based index
+                        const frequencyCount = frequency.value;
                         const extraTime = startHour.value + ':' + startMinute.value + startAmpm.value + '-' + endHour.value + ':' + endMinute.value + endAmpm.value;
                         
-                        const extraDates = getAllDatesForDay(year, month, extraDayOfWeek);
-                        if (extraDates.length > 0) {
-                            const extraDate = extraDates[Math.min(i, extraDates.length - 1)];
-                            
+                        // Get ALL dates for this day in the month
+                        const allExtraDates = getAllDatesForDay(year, month, extraDayOfWeek);
+                        
+                        // Apply start occurrence and frequency filters
+                        let selectedDates = [];
+                        if (frequencyCount === '5') { // "All Remaining"
+                            selectedDates = allExtraDates.slice(startFrom);
+                        } else {
+                            const endIndex = startFrom + parseInt(frequencyCount);
+                            selectedDates = allExtraDates.slice(startFrom, endIndex);
+                        }
+                        
+                        // Add selected dates with the same time
+                        selectedDates.forEach(function(extraDate) {
                             allEvents.push({
                                 date: extraDate,
                                 time: extraTime,
                                 isExtra: true
                             });
-                        }
+                        });
                     }
-                }
+                });
             }
             
             // Sort all events by date
