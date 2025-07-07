@@ -150,6 +150,287 @@
             font-size: 14px;
         }
 
+        .date-controls {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+            border: 2px solid #e1e5e9;
+            margin-bottom: 15px;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        .checkbox-group label {
+            font-weight: bold;
+            color: #333;
+            cursor: pointer;
+            margin: 0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .extra-day-controls {
+            display: none;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            padding: 20px;
+            background: #f0f8ff;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            border-left: 4px solid #667eea;
+        }
+
+        .extra-day-controls.show {
+            display: grid;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .schedule-section {
+            padding: 30px;
+        }
+
+        .schedule-header {
+            margin-bottom: 20px;
+        }
+
+        .schedule-info {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .schedule-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid #333;
+        }
+
+        .schedule-table th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px;
+            text-align: center;
+            font-weight: bold;
+            border: 1px solid #333;
+        }
+
+        .schedule-table td {
+            padding: 10px;
+            text-align: center;
+            border: 1px solid #333;
+            background: white;
+        }
+
+        .schedule-table tr.extra-class td {
+            background: #f5f5f5;
+        }
+
+        .schedule-table tr:nth-child(even):not(.extra-class) td {
+            background: #f8f9fa;
+        }
+
+        .schedule-table tr:hover td {
+            background: #e3f2fd;
+            transition: background 0.3s ease;
+        }
+
+        .schedule-table tbody tr:last-child td {
+            border-bottom: 1px solid #333;
+        }
+
+        .notes-section {
+            padding: 30px;
+            background: #f8f9fa;
+            border-top: 1px solid #e1e5e9;
+        }
+
+        .notes-list {
+            list-style: decimal;
+            padding-left: 20px;
+        }
+
+        .notes-list li {
+            padding: 8px 0;
+            line-height: 1.4;
+        }
+
+        .export-section {
+            padding: 30px;
+            text-align: center;
+            background: white;
+        }
+
+        /* Print styles for PDF export */
+        @page {
+            margin: 0.5in;
+            size: A4;
+        }
+
+        @media print {
+            body {
+                background: white !important;
+                padding: 0;
+                font-family: Arial, sans-serif;
+                font-size: 12px;
+                margin: 0;
+                color: #000;
+            }
+
+            .container {
+                max-width: none;
+                box-shadow: none;
+                border-radius: 0;
+                margin: 0;
+                padding: 0;
+                background: white;
+            }
+
+            .form-section,
+            .export-section,
+            .header {
+                display: none !important;
+            }
+
+            .notes-section {
+                page-break-before: avoid;
+                background: white !important;
+                border: none;
+                padding: 20px 0;
+            }
+
+            .schedule-section {
+                padding: 0;
+                background: white;
+            }
+
+            .schedule-header {
+                margin-bottom: 20px;
+            }
+
+            .schedule-info {
+                font-size: 14px;
+                line-height: 1.4;
+                color: #000;
+                font-weight: bold;
+            }
+
+            .schedule-table {
+                box-shadow: none;
+                border-radius: 0;
+                border-collapse: collapse;
+                border: 2px solid #000;
+                width: 100%;
+                font-size: 12px;
+            }
+
+            .schedule-table th {
+                background: white !important;
+                color: #000 !important;
+                border: 1px solid #000 !important;
+                padding: 8px 6px !important;
+                font-weight: bold;
+                text-align: center;
+            }
+
+            .schedule-table td {
+                background: white !important;
+                color: #000 !important;
+                border: 1px solid #000 !important;
+                padding: 8px 6px !important;
+                text-align: center;
+            }
+
+            .schedule-table tr.extra-class td {
+                background: #e8e8e8 !important;
+                color: #000 !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+
+            .schedule-table tr:nth-child(even) td {
+                background: white !important;
+            }
+
+            .schedule-table tr:nth-child(odd) td {
+                background: white !important;
+            }
+
+            .notes-list {
+                font-size: 12px;
+                line-height: 1.4;
+                margin-top: 15px;
+                color: #000;
+            }
+
+            .notes-list li {
+                padding: 5px 0;
+            }
+
+            .notes-list strong {
+                font-weight: bold;
+                color: #000;
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
         /* Mobile optimizations */
         @media (max-width: 768px) {
             .form-row {
@@ -270,235 +551,6 @@
                 font-size: 16px;
                 width: 100%;
             }
-        }
-
-        .date-controls {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-bottom: 20px;
-            padding: 20px;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-        }
-
-        .btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 15px rgba(102, 126, 234, 0.3);
-        }
-
-        .btn:active {
-            transform: translateY(0);
-        }
-
-        .btn-secondary {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-        }
-
-        .schedule-section {
-            padding: 30px;
-        }
-
-        .schedule-header {
-            margin-bottom: 20px;
-        }
-
-        .schedule-info {
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-            font-weight: bold;
-            color: #333;
-        }
-
-        .schedule-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            border-radius: 10px;
-            overflow: hidden;
-            border: 1px solid #333;
-        }
-
-        .schedule-table th {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 15px;
-            text-align: center;
-            font-weight: bold;
-            border: 1px solid #333;
-        }
-
-        .schedule-table td {
-            padding: 15px;
-            text-align: center;
-            border: 1px solid #333;
-            background: white;
-        }
-
-        .schedule-table tr:nth-child(even) td {
-            background: #f8f9fa;
-        }
-
-        .schedule-table tr:hover td {
-            background: #e3f2fd;
-            transition: background 0.3s ease;
-        }
-
-        .schedule-table tbody tr:last-child td {
-            border-bottom: 1px solid #333;
-        }
-
-        .notes-section {
-            padding: 30px;
-            background: #f8f9fa;
-            border-top: 1px solid #e1e5e9;
-        }
-
-        .notes-list {
-            list-style: decimal;
-            padding-left: 20px;
-        }
-
-        .notes-list li {
-            padding: 8px 0;
-            line-height: 1.4;
-        }
-
-        .export-section {
-            padding: 30px;
-            text-align: center;
-            background: white;
-        }
-
-        /* Print styles for PDF export */
-        @page {
-            margin: 0.5in;
-            size: A4;
-        }
-
-        @media print {
-            body {
-                background: white !important;
-                padding: 0;
-                font-family: Arial, sans-serif;
-                font-size: 12px;
-                margin: 0;
-                color: #000;
-            }
-
-            .container {
-                max-width: none;
-                box-shadow: none;
-                border-radius: 0;
-                margin: 0;
-                padding: 0;
-                background: white;
-            }
-
-            .form-section,
-            .export-section,
-            .header {
-                display: none !important;
-            }
-
-            .notes-section {
-                page-break-before: avoid;
-                background: white !important;
-                border: none;
-                padding: 20px 0;
-            }
-
-            .schedule-section {
-                padding: 0;
-                background: white;
-            }
-
-            .schedule-header {
-                margin-bottom: 20px;
-            }
-
-            .schedule-info {
-                font-size: 14px;
-                line-height: 1.4;
-                color: #000;
-                font-weight: bold;
-            }
-
-            .schedule-table {
-                box-shadow: none;
-                border-radius: 0;
-                border-collapse: collapse;
-                border: 2px solid #000;
-                width: 100%;
-                font-size: 12px;
-            }
-
-            .schedule-table th {
-                background: white !important;
-                color: #000 !important;
-                border: 1px solid #000 !important;
-                padding: 12px 8px !important;
-                font-weight: bold;
-                text-align: center;
-            }
-
-            .schedule-table td {
-                background: white !important;
-                color: #000 !important;
-                border: 1px solid #000 !important;
-                padding: 12px 8px !important;
-                text-align: center;
-            }
-
-            .schedule-table tr:nth-child(even) td {
-                background: white !important;
-            }
-
-            .schedule-table tr:nth-child(odd) td {
-                background: white !important;
-            }
-
-            .notes-list {
-                font-size: 12px;
-                line-height: 1.4;
-                margin-top: 15px;
-                color: #000;
-            }
-
-            .notes-list li {
-                padding: 5px 0;
-            }
-
-            .notes-list strong {
-                font-weight: bold;
-                color: #000;
-            }
-        }
-
-        .fade-in {
-            animation: fadeIn 0.5s ease-in;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
         }
     </style>
 </head>
@@ -626,6 +678,91 @@
                 </div>
             </div>
 
+            <div class="checkbox-group">
+                <input type="checkbox" id="extra-class" onchange="toggleExtraClass()">
+                <label for="extra-class">EXTRA CLASS</label>
+            </div>
+
+            <div class="extra-day-controls" id="extra-day-controls">
+                <div class="form-group">
+                    <label for="extra-day">Extra Day of Week</label>
+                    <select id="extra-day">
+                        <option value="0">AHAD (Sunday)</option>
+                        <option value="1">ISNIN (Monday)</option>
+                        <option value="2">SELASA (Tuesday)</option>
+                        <option value="3">RABU (Wednesday)</option>
+                        <option value="4" selected>KHAMIS (Thursday)</option>
+                        <option value="5">JUMAAT (Friday)</option>
+                        <option value="6">SABTU (Saturday)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Extra Time Range</label>
+                    <div class="time-container">
+                        <div class="time-row">
+                            <span class="time-label">Start:</span>
+                            <div class="time-picker">
+                                <select id="extra-start-hour">
+                                    <option value="01">01</option>
+                                    <option value="02">02</option>
+                                    <option value="03">03</option>
+                                    <option value="04">04</option>
+                                    <option value="05" selected>05</option>
+                                    <option value="06">06</option>
+                                    <option value="07">07</option>
+                                    <option value="08">08</option>
+                                    <option value="09">09</option>
+                                    <option value="10">10</option>
+                                    <option value="11">11</option>
+                                    <option value="12">12</option>
+                                </select>
+                                <span>:</span>
+                                <select id="extra-start-minute">
+                                    <option value="00" selected>00</option>
+                                    <option value="15">15</option>
+                                    <option value="30">30</option>
+                                    <option value="45">45</option>
+                                </select>
+                                <select id="extra-start-ampm">
+                                    <option value="AM">AM</option>
+                                    <option value="PM" selected>PM</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="time-row">
+                            <span class="time-label">End:</span>
+                            <div class="time-picker">
+                                <select id="extra-end-hour">
+                                    <option value="01">01</option>
+                                    <option value="02">02</option>
+                                    <option value="03">03</option>
+                                    <option value="04">04</option>
+                                    <option value="05">05</option>
+                                    <option value="06" selected>06</option>
+                                    <option value="07">07</option>
+                                    <option value="08">08</option>
+                                    <option value="09">09</option>
+                                    <option value="10">10</option>
+                                    <option value="11">11</option>
+                                    <option value="12">12</option>
+                                </select>
+                                <span>:</span>
+                                <select id="extra-end-minute">
+                                    <option value="00">00</option>
+                                    <option value="15">15</option>
+                                    <option value="30" selected>30</option>
+                                    <option value="45">45</option>
+                                </select>
+                                <select id="extra-end-ampm">
+                                    <option value="AM">AM</option>
+                                    <option value="PM" selected>PM</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <button class="btn" onclick="generateSchedule()">🎯 Generate Schedule</button>
         </div>
 
@@ -722,6 +859,28 @@
             return `${startHour}:${startMinute}${startAmpm}-${endHour}:${endMinute}${endAmpm}`;
         }
 
+        function getExtraTimeString() {
+            const startHour = document.getElementById('extra-start-hour').value;
+            const startMinute = document.getElementById('extra-start-minute').value;
+            const startAmpm = document.getElementById('extra-start-ampm').value;
+            const endHour = document.getElementById('extra-end-hour').value;
+            const endMinute = document.getElementById('extra-end-minute').value;
+            const endAmpm = document.getElementById('extra-end-ampm').value;
+            
+            return `${startHour}:${startMinute}${startAmpm}-${endHour}:${endMinute}${endAmpm}`;
+        }
+
+        function toggleExtraClass() {
+            const checkbox = document.getElementById('extra-class');
+            const extraControls = document.getElementById('extra-day-controls');
+            
+            if (checkbox.checked) {
+                extraControls.classList.add('show');
+            } else {
+                extraControls.classList.remove('show');
+            }
+        }
+
         function generateSchedule() {
             updateDisplayInfo();
             
@@ -733,17 +892,56 @@
             const dates = getAllDatesForDay(year, month, dayOfWeek);
             const tbody = document.getElementById('schedule-body');
             
+            // Get extra classes if checkbox is checked
+            const extraClassCheckbox = document.getElementById('extra-class');
+            let extraDates = [];
+            let extraTime = '';
+            
+            if (extraClassCheckbox.checked) {
+                const extraDayOfWeek = parseInt(document.getElementById('extra-day').value);
+                extraTime = getExtraTimeString();
+                extraDates = getAllDatesForDay(year, month, extraDayOfWeek);
+            }
+            
+            // Combine all dates with their types and times
+            const allEvents = [];
+            
+            // Add regular classes
+            dates.forEach(date => {
+                allEvents.push({
+                    date: date,
+                    time: defaultTime,
+                    isExtra: false
+                });
+            });
+            
+            // Add extra classes
+            extraDates.forEach(date => {
+                allEvents.push({
+                    date: date,
+                    time: extraTime,
+                    isExtra: true
+                });
+            });
+            
+            // Sort all events by date
+            allEvents.sort((a, b) => a.date.getTime() - b.date.getTime());
+            
+            // Clear and populate table
             tbody.innerHTML = '';
             
-            dates.forEach((date, index) => {
+            allEvents.forEach((event, index) => {
                 const row = document.createElement('tr');
                 row.className = 'fade-in';
+                if (event.isExtra) {
+                    row.classList.add('extra-class');
+                }
                 row.style.animationDelay = `${index * 0.1}s`;
                 
                 row.innerHTML = `
                     <td>${index + 1}</td>
-                    <td>${formatDate(date)}</td>
-                    <td>${defaultTime}</td>
+                    <td>${formatDate(event.date)}</td>
+                    <td>${event.time}</td>
                 `;
                 
                 tbody.appendChild(row);
