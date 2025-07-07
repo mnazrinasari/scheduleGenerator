@@ -96,21 +96,55 @@
 
         .time-picker {
             display: grid;
-            grid-template-columns: auto 1fr auto 1fr auto;
-            gap: 10px;
+            grid-template-columns: 80px 20px 80px 80px;
+            gap: 8px;
             align-items: center;
+            justify-items: center;
         }
 
         .time-picker select {
-            padding: 8px;
+            padding: 10px 8px;
             border: 2px solid #e1e5e9;
             border-radius: 6px;
             font-size: 14px;
+            text-align: center;
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+
+        .time-picker select:hover {
+            border-color: #667eea;
+        }
+
+        .time-picker select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
         }
 
         .time-picker span {
             font-weight: bold;
             color: #333;
+            text-align: center;
+        }
+
+        .time-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .time-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .time-label {
+            font-weight: bold;
+            color: #333;
+            min-width: 50px;
+            text-align: left;
         }
 
         .date-controls {
@@ -402,61 +436,67 @@
                 </div>
                 <div class="form-group">
                     <label>Time Range</label>
-                    <div class="time-picker">
-                        <span>Start:</span>
-                        <select id="start-hour">
-                            <option value="01">01</option>
-                            <option value="02">02</option>
-                            <option value="03" selected>03</option>
-                            <option value="04">04</option>
-                            <option value="05">05</option>
-                            <option value="06">06</option>
-                            <option value="07">07</option>
-                            <option value="08">08</option>
-                            <option value="09">09</option>
-                            <option value="10">10</option>
-                            <option value="11">11</option>
-                            <option value="12">12</option>
-                        </select>
-                        <span>:</span>
-                        <select id="start-minute">
-                            <option value="00" selected>00</option>
-                            <option value="15">15</option>
-                            <option value="30">30</option>
-                            <option value="45">45</option>
-                        </select>
-                        <select id="start-ampm">
-                            <option value="AM">AM</option>
-                            <option value="PM" selected>PM</option>
-                        </select>
-                    </div>
-                    <div class="time-picker" style="margin-top: 10px;">
-                        <span>End:</span>
-                        <select id="end-hour">
-                            <option value="01">01</option>
-                            <option value="02">02</option>
-                            <option value="03">03</option>
-                            <option value="04" selected>04</option>
-                            <option value="05">05</option>
-                            <option value="06">06</option>
-                            <option value="07">07</option>
-                            <option value="08">08</option>
-                            <option value="09">09</option>
-                            <option value="10">10</option>
-                            <option value="11">11</option>
-                            <option value="12">12</option>
-                        </select>
-                        <span>:</span>
-                        <select id="end-minute">
-                            <option value="00">00</option>
-                            <option value="15">15</option>
-                            <option value="30" selected>30</option>
-                            <option value="45">45</option>
-                        </select>
-                        <select id="end-ampm">
-                            <option value="AM">AM</option>
-                            <option value="PM" selected>PM</option>
-                        </select>
+                    <div class="time-container">
+                        <div class="time-row">
+                            <span class="time-label">Start:</span>
+                            <div class="time-picker">
+                                <select id="start-hour">
+                                    <option value="01">01</option>
+                                    <option value="02">02</option>
+                                    <option value="03" selected>03</option>
+                                    <option value="04">04</option>
+                                    <option value="05">05</option>
+                                    <option value="06">06</option>
+                                    <option value="07">07</option>
+                                    <option value="08">08</option>
+                                    <option value="09">09</option>
+                                    <option value="10">10</option>
+                                    <option value="11">11</option>
+                                    <option value="12">12</option>
+                                </select>
+                                <span>:</span>
+                                <select id="start-minute">
+                                    <option value="00" selected>00</option>
+                                    <option value="15">15</option>
+                                    <option value="30">30</option>
+                                    <option value="45">45</option>
+                                </select>
+                                <select id="start-ampm">
+                                    <option value="AM">AM</option>
+                                    <option value="PM" selected>PM</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="time-row">
+                            <span class="time-label">End:</span>
+                            <div class="time-picker">
+                                <select id="end-hour">
+                                    <option value="01">01</option>
+                                    <option value="02">02</option>
+                                    <option value="03">03</option>
+                                    <option value="04" selected>04</option>
+                                    <option value="05">05</option>
+                                    <option value="06">06</option>
+                                    <option value="07">07</option>
+                                    <option value="08">08</option>
+                                    <option value="09">09</option>
+                                    <option value="10">10</option>
+                                    <option value="11">11</option>
+                                    <option value="12">12</option>
+                                </select>
+                                <span>:</span>
+                                <select id="end-minute">
+                                    <option value="00">00</option>
+                                    <option value="15">15</option>
+                                    <option value="30" selected>30</option>
+                                    <option value="45">45</option>
+                                </select>
+                                <select id="end-ampm">
+                                    <option value="AM">AM</option>
+                                    <option value="PM" selected>PM</option>
+                                </select>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
