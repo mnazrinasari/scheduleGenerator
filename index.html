@@ -585,9 +585,13 @@
                 </div>
             </div>
 
-            <div style="background: #fff3cd; border: 2px solid #ffc107; border-radius: 10px; padding: 15px; margin-bottom: 20px; display: flex; align-items: center; gap: 15px;">
-                <input type="checkbox" id="skip-main-schedule" style="width: 20px; height: 20px; cursor: pointer;" onchange="toggleMainScheduleFields()">
-                <label for="skip-main-schedule" style="margin: 0; cursor: pointer; font-weight: bold; color: #856404; font-size: 16px; text-transform: uppercase; letter-spacing: 0.5px;">Skip Main Schedule (Extra Class Only)</label>
+            <div
+                style="background: #fff3cd; border: 2px solid #ffc107; border-radius: 10px; padding: 15px; margin-bottom: 20px; display: flex; align-items: center; gap: 15px;">
+                <input type="checkbox" id="skip-main-schedule" style="width: 20px; height: 20px; cursor: pointer;"
+                    onchange="toggleMainScheduleFields()">
+                <label for="skip-main-schedule"
+                    style="margin: 0; cursor: pointer; font-weight: bold; color: #856404; font-size: 16px; text-transform: uppercase; letter-spacing: 0.5px;">Skip
+                    Main Schedule (Extra Class Only)</label>
             </div>
 
             <div class="checkbox-group">
@@ -749,11 +753,14 @@
         function toggleMainScheduleFields() {
             const skipCheckbox = document.getElementById('skip-main-schedule');
             const dayOfWeekGroup = document.getElementById('day-of-week-group');
+            const timeRangeRow = document.getElementById('time-range-row');
 
             if (skipCheckbox.checked) {
                 dayOfWeekGroup.style.display = 'none';
+                timeRangeRow.style.display = 'none';
             } else {
                 dayOfWeekGroup.style.display = 'flex';
+                timeRangeRow.style.display = 'grid';
             }
         }
 
