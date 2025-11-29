@@ -419,8 +419,13 @@
                 height: 20px;
             }
 
-            .schedule-table tr.extra-class td {
+            .schedule-table tr.extra-class:not(.skip-mode) td {
                 background: #d3d3d3 !important;
+                color: #000 !important;
+            }
+
+            .schedule-table tr.extra-class.skip-mode td {
+                background: white !important;
                 color: #000 !important;
             }
         }
