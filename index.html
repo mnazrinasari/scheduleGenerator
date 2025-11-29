@@ -481,7 +481,7 @@
                 </div>
             </div>
 
-            <div class="date-controls">
+            <div class="date-controls" id="date-controls">
                 <div class="form-group">
                     <label for="month">Month</label>
                     <select id="month">
@@ -517,7 +517,7 @@
                 </div>
             </div>
 
-            <div class="form-row">
+            <div class="form-row" id="time-range-row">
                 <div class="form-group">
                     <label>Time Range</label>
                     <div class="time-container">
@@ -586,7 +586,7 @@
             </div>
 
             <div style="background: #fff3cd; border: 2px solid #ffc107; border-radius: 10px; padding: 15px; margin-bottom: 20px; display: flex; align-items: center; gap: 15px;">
-                <input type="checkbox" id="skip-main-schedule" style="width: 20px; height: 20px; cursor: pointer;">
+                <input type="checkbox" id="skip-main-schedule" style="width: 20px; height: 20px; cursor: pointer;" onchange="toggleMainScheduleFields()">
                 <label for="skip-main-schedule" style="margin: 0; cursor: pointer; font-weight: bold; color: #856404; font-size: 16px; text-transform: uppercase; letter-spacing: 0.5px;">Skip Main Schedule (Extra Class Only)</label>
             </div>
 
@@ -743,6 +743,20 @@
                 // Clear all entries when unchecked
                 document.getElementById('extra-entries-container').innerHTML = '';
                 extraClassCounter = 0;
+            }
+        }
+
+        function toggleMainScheduleFields() {
+            const skipCheckbox = document.getElementById('skip-main-schedule');
+            const dateControls = document.getElementById('date-controls');
+            const timeRangeRow = document.getElementById('time-range-row');
+
+            if (skipCheckbox.checked) {
+                dateControls.style.display = 'none';
+                timeRangeRow.style.display = 'none';
+            } else {
+                dateControls.style.display = 'grid';
+                timeRangeRow.style.display = 'grid';
             }
         }
 
