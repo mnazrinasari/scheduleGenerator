@@ -515,6 +515,9 @@
                         <option value="6">SABTU (Saturday)</option>
                     </select>
                 </div>
+            </div>
+
+            <div class="form-row">
                 <div class="form-group">
                     <label>Time Range</label>
                     <div class="time-container">
@@ -582,17 +585,9 @@
                 </div>
             </div>
 
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="start-week">START FROM</label>
-                    <select id="start-week">
-                        <option value="1" selected>1st Week</option>
-                        <option value="2">2nd Week</option>
-                        <option value="3">3rd Week</option>
-                        <option value="4">4th Week</option>
-                        <option value="5">5th Week</option>
-                    </select>
-                </div>
+            <div style="background: #fff3cd; border: 2px solid #ffc107; border-radius: 10px; padding: 15px; margin-bottom: 20px; display: flex; align-items: center; gap: 15px;">
+                <input type="checkbox" id="skip-main-schedule" style="width: 20px; height: 20px; cursor: pointer;">
+                <label for="skip-main-schedule" style="margin: 0; cursor: pointer; font-weight: bold; color: #856404; font-size: 16px; text-transform: uppercase; letter-spacing: 0.5px;">Skip Main Schedule (Extra Class Only)</label>
             </div>
 
             <div class="checkbox-group">
@@ -865,22 +860,23 @@
             const year = parseInt(document.getElementById('year').value);
             const dayOfWeek = parseInt(document.getElementById('day').value);
             const defaultTime = getDefaultTimeString();
-            const startWeek = parseInt(document.getElementById('start-week').value) - 1; // Convert to 0-based index
 
             const dates = getAllDatesForDay(year, month, dayOfWeek);
             const tbody = document.getElementById('schedule-body');
 
             const allEvents = [];
 
-            // Add regular classes starting from the selected week
-            const regularDates = dates.slice(startWeek);
-            regularDates.forEach(function (date) {
-                allEvents.push({
-                    date: date,
-                    time: defaultTime,
-                    isExtra: false
+            // Add regular classes (unless skipped)
+            const skipMainSchedule = document.getElementById('skip-main-schedule').checked;
+            if (!skipMainSchedule) {
+                dates.forEach(function (date) {
+                    allEvents.push({
+                        date: date,
+                        time: defaultTime,
+                        isExtra: false
+                    });
                 });
-            });
+            }
 
             // Get extra classes if checkbox is checked
             const extraClassCheckbox = document.getElementById('extra-class');
