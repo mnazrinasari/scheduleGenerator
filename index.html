@@ -503,7 +503,7 @@
                     <label for="year">Year</label>
                     <input type="number" id="year" value="" min="2020" max="2035">
                 </div>
-                <div class="form-group">
+                <div class="form-group" id="day-of-week-group">
                     <label for="day">Day of Week</label>
                     <select id="day">
                         <option value="0">AHAD (Sunday)</option>
@@ -748,15 +748,12 @@
 
         function toggleMainScheduleFields() {
             const skipCheckbox = document.getElementById('skip-main-schedule');
-            const dateControls = document.getElementById('date-controls');
-            const timeRangeRow = document.getElementById('time-range-row');
+            const dayOfWeekGroup = document.getElementById('day-of-week-group');
 
             if (skipCheckbox.checked) {
-                dateControls.style.display = 'none';
-                timeRangeRow.style.display = 'none';
+                dayOfWeekGroup.style.display = 'none';
             } else {
-                dateControls.style.display = 'grid';
-                timeRangeRow.style.display = 'grid';
+                dayOfWeekGroup.style.display = 'flex';
             }
         }
 
