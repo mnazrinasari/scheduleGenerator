@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -23,7 +24,7 @@
             margin: 0 auto;
             background: white;
             border-radius: 15px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
             overflow: hidden;
         }
 
@@ -37,7 +38,7 @@
         .header h1 {
             font-size: 2.5em;
             margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
         }
 
         .form-section {
@@ -139,7 +140,7 @@
             padding: 20px;
             background: white;
             border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
         }
 
         .checkbox-group {
@@ -172,7 +173,7 @@
             display: none;
             background: #f0f8ff;
             border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
             border-left: 4px solid #667eea;
             padding: 20px;
             margin-bottom: 20px;
@@ -355,8 +356,15 @@
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         /* Print styles */
@@ -415,7 +423,9 @@
 
         /* Mobile styles */
         @media (max-width: 768px) {
-            .form-row, .date-controls {
+
+            .form-row,
+            .date-controls {
                 grid-template-columns: 1fr;
                 gap: 15px;
             }
@@ -440,13 +450,14 @@
                 gap: 10px;
             }
 
-            .extra-day-controls > div:first-child {
+            .extra-day-controls>div:first-child {
                 grid-template-columns: 1fr !important;
                 gap: 15px;
             }
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <div class="header">
@@ -571,13 +582,27 @@
                 </div>
             </div>
 
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="start-week">START FROM</label>
+                    <select id="start-week">
+                        <option value="1" selected>1st Week</option>
+                        <option value="2">2nd Week</option>
+                        <option value="3">3rd Week</option>
+                        <option value="4">4th Week</option>
+                        <option value="5">5th Week</option>
+                    </select>
+                </div>
+            </div>
+
             <div class="checkbox-group">
                 <input type="checkbox" id="extra-class" onchange="toggleExtraClass()">
                 <label for="extra-class">EXTRA CLASS</label>
             </div>
 
             <div class="extra-day-controls" id="extra-day-controls">
-                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; margin-bottom: 20px; padding: 15px; background: #e8f4fd; border-radius: 8px;">
+                <div
+                    style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; margin-bottom: 20px; padding: 15px; background: #e8f4fd; border-radius: 8px;">
                     <div class="form-group">
                         <label for="global-start-week">START FROM</label>
                         <select id="global-start-week">
@@ -602,7 +627,7 @@
                         <button type="button" class="btn-add" onclick="addExtraEntry()">+ Add Extra Class</button>
                     </div>
                 </div>
-                
+
                 <div id="extra-entries-container">
                     <!-- Extra entries will be dynamically generated here -->
                 </div>
@@ -640,8 +665,10 @@
 
         <div class="notes-section">
             <ol class="notes-list">
-                <li><strong>GHT tidak bertanggungjawab</strong> menguruskan pembatalan kelas yang <strong>melebihi 2 sesi</strong> untuk setiap bulan.</li>
-                <li>Kelas ganti akan diuruskan atas <strong>budi bicara</strong> dan <strong>waktu kekosongan tutor</strong>.</li>
+                <li><strong>GHT tidak bertanggungjawab</strong> menguruskan pembatalan kelas yang <strong>melebihi 2
+                        sesi</strong> untuk setiap bulan.</li>
+                <li>Kelas ganti akan diuruskan atas <strong>budi bicara</strong> dan <strong>waktu kekosongan
+                        tutor</strong>.</li>
                 <li>Yuran Bulanan hendaklah dibayar <strong>SEBELUM 1 Hari Bulan</strong> setiap bulan.</li>
             </ol>
         </div>
@@ -671,16 +698,16 @@
         function getAllDatesForDay(year, month, dayOfWeek) {
             const dates = [];
             const date = new Date(year, month, 1);
-            
+
             while (date.getDay() !== dayOfWeek) {
                 date.setDate(date.getDate() + 1);
             }
-            
+
             while (date.getMonth() === month) {
                 dates.push(new Date(date));
                 date.setDate(date.getDate() + 7);
             }
-            
+
             return dates;
         }
 
@@ -689,7 +716,7 @@
             const month = monthNames[date.getMonth()];
             const year = date.getFullYear();
             const dayName = dayNames[date.getDay()];
-            
+
             return day + ' ' + month + ' ' + year + ' | ' + dayName;
         }
 
@@ -700,7 +727,7 @@
             const endHour = document.getElementById('end-hour').value;
             const endMinute = document.getElementById('end-minute').value;
             const endAmpm = document.getElementById('end-ampm').value;
-            
+
             return startHour + ':' + startMinute + startAmpm + '-' + endHour + ':' + endMinute + endAmpm;
         }
 
@@ -709,7 +736,7 @@
         function toggleExtraClass() {
             const checkbox = document.getElementById('extra-class');
             const extraControls = document.getElementById('extra-day-controls');
-            
+
             if (checkbox.checked) {
                 extraControls.classList.add('show');
                 // Add first entry if none exist
@@ -727,96 +754,96 @@
         function addExtraEntry() {
             const container = document.getElementById('extra-entries-container');
             extraClassCounter++;
-            
+
             const entryDiv = document.createElement('div');
             entryDiv.className = 'extra-entry';
             entryDiv.id = 'extra-entry-' + extraClassCounter;
-            
-            entryDiv.innerHTML = 
+
+            entryDiv.innerHTML =
                 '<div class="extra-entry-header">' +
-                    '<h4>Extra Class ' + extraClassCounter + '</h4>' +
-                    '<button type="button" class="btn-remove" onclick="removeExtraEntry(' + extraClassCounter + ')">Remove</button>' +
+                '<h4>Extra Class ' + extraClassCounter + '</h4>' +
+                '<button type="button" class="btn-remove" onclick="removeExtraEntry(' + extraClassCounter + ')">Remove</button>' +
                 '</div>' +
                 '<div class="extra-entry-row">' +
-                    '<div class="form-group">' +
-                        '<label>Day of Week</label>' +
-                        '<select id="extra-day-' + extraClassCounter + '">' +
-                            '<option value="0">AHAD (Sunday)</option>' +
-                            '<option value="1">ISNIN (Monday)</option>' +
-                            '<option value="2">SELASA (Tuesday)</option>' +
-                            '<option value="3">RABU (Wednesday)</option>' +
-                            '<option value="4" selected>KHAMIS (Thursday)</option>' +
-                            '<option value="5">JUMAAT (Friday)</option>' +
-                            '<option value="6">SABTU (Saturday)</option>' +
-                        '</select>' +
-                    '</div>' +
-                    '<div class="form-group">' +
-                        '<label>Time Range</label>' +
-                        '<div class="time-container">' +
-                            '<div class="time-row">' +
-                                '<span class="time-label">Start:</span>' +
-                                '<div class="time-picker">' +
-                                    '<select id="extra-start-hour-' + extraClassCounter + '">' +
-                                        '<option value="01">01</option>' +
-                                        '<option value="02">02</option>' +
-                                        '<option value="03">03</option>' +
-                                        '<option value="04">04</option>' +
-                                        '<option value="05" selected>05</option>' +
-                                        '<option value="06">06</option>' +
-                                        '<option value="07">07</option>' +
-                                        '<option value="08">08</option>' +
-                                        '<option value="09">09</option>' +
-                                        '<option value="10">10</option>' +
-                                        '<option value="11">11</option>' +
-                                        '<option value="12">12</option>' +
-                                    '</select>' +
-                                    '<span>:</span>' +
-                                    '<select id="extra-start-minute-' + extraClassCounter + '">' +
-                                        '<option value="00" selected>00</option>' +
-                                        '<option value="15">15</option>' +
-                                        '<option value="30">30</option>' +
-                                        '<option value="45">45</option>' +
-                                    '</select>' +
-                                    '<select id="extra-start-ampm-' + extraClassCounter + '">' +
-                                        '<option value="AM">AM</option>' +
-                                        '<option value="PM" selected>PM</option>' +
-                                    '</select>' +
-                                '</div>' +
-                            '</div>' +
-                            '<div class="time-row">' +
-                                '<span class="time-label">End:</span>' +
-                                '<div class="time-picker">' +
-                                    '<select id="extra-end-hour-' + extraClassCounter + '">' +
-                                        '<option value="01">01</option>' +
-                                        '<option value="02">02</option>' +
-                                        '<option value="03">03</option>' +
-                                        '<option value="04">04</option>' +
-                                        '<option value="05">05</option>' +
-                                        '<option value="06" selected>06</option>' +
-                                        '<option value="07">07</option>' +
-                                        '<option value="08">08</option>' +
-                                        '<option value="09">09</option>' +
-                                        '<option value="10">10</option>' +
-                                        '<option value="11">11</option>' +
-                                        '<option value="12">12</option>' +
-                                    '</select>' +
-                                    '<span>:</span>' +
-                                    '<select id="extra-end-minute-' + extraClassCounter + '">' +
-                                        '<option value="00">00</option>' +
-                                        '<option value="15">15</option>' +
-                                        '<option value="30" selected>30</option>' +
-                                        '<option value="45">45</option>' +
-                                    '</select>' +
-                                    '<select id="extra-end-ampm-' + extraClassCounter + '">' +
-                                        '<option value="AM">AM</option>' +
-                                        '<option value="PM" selected>PM</option>' +
-                                    '</select>' +
-                                '</div>' +
-                            '</div>' +
-                        '</div>' +
-                    '</div>' +
+                '<div class="form-group">' +
+                '<label>Day of Week</label>' +
+                '<select id="extra-day-' + extraClassCounter + '">' +
+                '<option value="0">AHAD (Sunday)</option>' +
+                '<option value="1">ISNIN (Monday)</option>' +
+                '<option value="2">SELASA (Tuesday)</option>' +
+                '<option value="3">RABU (Wednesday)</option>' +
+                '<option value="4" selected>KHAMIS (Thursday)</option>' +
+                '<option value="5">JUMAAT (Friday)</option>' +
+                '<option value="6">SABTU (Saturday)</option>' +
+                '</select>' +
+                '</div>' +
+                '<div class="form-group">' +
+                '<label>Time Range</label>' +
+                '<div class="time-container">' +
+                '<div class="time-row">' +
+                '<span class="time-label">Start:</span>' +
+                '<div class="time-picker">' +
+                '<select id="extra-start-hour-' + extraClassCounter + '">' +
+                '<option value="01">01</option>' +
+                '<option value="02">02</option>' +
+                '<option value="03">03</option>' +
+                '<option value="04">04</option>' +
+                '<option value="05" selected>05</option>' +
+                '<option value="06">06</option>' +
+                '<option value="07">07</option>' +
+                '<option value="08">08</option>' +
+                '<option value="09">09</option>' +
+                '<option value="10">10</option>' +
+                '<option value="11">11</option>' +
+                '<option value="12">12</option>' +
+                '</select>' +
+                '<span>:</span>' +
+                '<select id="extra-start-minute-' + extraClassCounter + '">' +
+                '<option value="00" selected>00</option>' +
+                '<option value="15">15</option>' +
+                '<option value="30">30</option>' +
+                '<option value="45">45</option>' +
+                '</select>' +
+                '<select id="extra-start-ampm-' + extraClassCounter + '">' +
+                '<option value="AM">AM</option>' +
+                '<option value="PM" selected>PM</option>' +
+                '</select>' +
+                '</div>' +
+                '</div>' +
+                '<div class="time-row">' +
+                '<span class="time-label">End:</span>' +
+                '<div class="time-picker">' +
+                '<select id="extra-end-hour-' + extraClassCounter + '">' +
+                '<option value="01">01</option>' +
+                '<option value="02">02</option>' +
+                '<option value="03">03</option>' +
+                '<option value="04">04</option>' +
+                '<option value="05">05</option>' +
+                '<option value="06" selected>06</option>' +
+                '<option value="07">07</option>' +
+                '<option value="08">08</option>' +
+                '<option value="09">09</option>' +
+                '<option value="10">10</option>' +
+                '<option value="11">11</option>' +
+                '<option value="12">12</option>' +
+                '</select>' +
+                '<span>:</span>' +
+                '<select id="extra-end-minute-' + extraClassCounter + '">' +
+                '<option value="00">00</option>' +
+                '<option value="15">15</option>' +
+                '<option value="30" selected>30</option>' +
+                '<option value="45">45</option>' +
+                '</select>' +
+                '<select id="extra-end-ampm-' + extraClassCounter + '">' +
+                '<option value="AM">AM</option>' +
+                '<option value="PM" selected>PM</option>' +
+                '</select>' +
+                '</div>' +
+                '</div>' +
+                '</div>' +
+                '</div>' +
                 '</div>';
-            
+
             container.appendChild(entryDiv);
         }
 
@@ -833,37 +860,39 @@
 
         function generateSchedule() {
             updateDisplayInfo();
-            
+
             const month = parseInt(document.getElementById('month').value);
             const year = parseInt(document.getElementById('year').value);
             const dayOfWeek = parseInt(document.getElementById('day').value);
             const defaultTime = getDefaultTimeString();
-            
+            const startWeek = parseInt(document.getElementById('start-week').value) - 1; // Convert to 0-based index
+
             const dates = getAllDatesForDay(year, month, dayOfWeek);
             const tbody = document.getElementById('schedule-body');
-            
+
             const allEvents = [];
-            
-            // Add regular classes
-            dates.forEach(function(date) {
+
+            // Add regular classes starting from the selected week
+            const regularDates = dates.slice(startWeek);
+            regularDates.forEach(function (date) {
                 allEvents.push({
                     date: date,
                     time: defaultTime,
                     isExtra: false
                 });
             });
-            
+
             // Get extra classes if checkbox is checked
             const extraClassCheckbox = document.getElementById('extra-class');
             if (extraClassCheckbox.checked) {
                 const container = document.getElementById('extra-entries-container');
                 const extraEntries = container.querySelectorAll('.extra-entry');
-                
+
                 // Get global settings
                 const globalStartWeek = parseInt(document.getElementById('global-start-week').value) - 1; // Convert to 0-based index
                 const globalFrequency = document.getElementById('global-frequency').value;
-                
-                extraEntries.forEach(function(entry) {
+
+                extraEntries.forEach(function (entry) {
                     const entryId = entry.id.split('-')[2]; // Get the counter number
                     const daySelect = document.getElementById('extra-day-' + entryId);
                     const startHour = document.getElementById('extra-start-hour-' + entryId);
@@ -872,14 +901,14 @@
                     const endHour = document.getElementById('extra-end-hour-' + entryId);
                     const endMinute = document.getElementById('extra-end-minute-' + entryId);
                     const endAmpm = document.getElementById('extra-end-ampm-' + entryId);
-                    
+
                     if (daySelect && startHour && startMinute && startAmpm && endHour && endMinute && endAmpm) {
                         const extraDayOfWeek = parseInt(daySelect.value);
                         const extraTime = startHour.value + ':' + startMinute.value + startAmpm.value + '-' + endHour.value + ':' + endMinute.value + endAmpm.value;
-                        
+
                         // Get ALL dates for this day in the month
                         const allExtraDates = getAllDatesForDay(year, month, extraDayOfWeek);
-                        
+
                         // Apply global start week and frequency filters
                         let selectedDates = [];
                         if (globalFrequency === 'all') { // "All"
@@ -888,9 +917,9 @@
                             const endIndex = globalStartWeek + parseInt(globalFrequency);
                             selectedDates = allExtraDates.slice(globalStartWeek, endIndex);
                         }
-                        
+
                         // Add selected dates with the same time
-                        selectedDates.forEach(function(extraDate) {
+                        selectedDates.forEach(function (extraDate) {
                             allEvents.push({
                                 date: extraDate,
                                 time: extraTime,
@@ -900,28 +929,28 @@
                     }
                 });
             }
-            
+
             // Sort all events by date
-            allEvents.sort(function(a, b) {
+            allEvents.sort(function (a, b) {
                 return a.date.getTime() - b.date.getTime();
             });
-            
+
             // Clear and populate table
             tbody.innerHTML = '';
-            
-            allEvents.forEach(function(event, index) {
+
+            allEvents.forEach(function (event, index) {
                 const row = document.createElement('tr');
                 row.className = 'fade-in';
                 if (event.isExtra) {
                     row.classList.add('extra-class');
                 }
                 row.style.animationDelay = (index * 0.1) + 's';
-                
-                row.innerHTML = 
+
+                row.innerHTML =
                     '<td>' + (index + 1) + '</td>' +
                     '<td>' + formatDate(event.date) + '</td>' +
                     '<td>' + event.time + '</td>';
-                
+
                 tbody.appendChild(row);
             });
         }
@@ -934,7 +963,7 @@
             const now = new Date();
             const currentMonth = now.getMonth();
             const currentYear = now.getFullYear();
-            
+
             document.getElementById('month').value = currentMonth;
             document.getElementById('year').value = currentYear;
         }
@@ -947,11 +976,12 @@
         // Initialize with current date and default values
         setCurrentDate();
         updateDisplayInfo();
-        
+
         // Initialize extra entries when page loads
-        setTimeout(function() {
+        setTimeout(function () {
             updateExtraEntries();
         }, 100);
     </script>
 </body>
+
 </html>
