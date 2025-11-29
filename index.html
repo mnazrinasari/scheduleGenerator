@@ -317,6 +317,10 @@
             background: #f8f8f8;
         }
 
+        .schedule-table tr.extra-class.skip-mode td {
+            background: white;
+        }
+
         .schedule-table tr:hover td {
             background: #e3f2fd;
             transition: background 0.3s ease;
@@ -481,6 +485,15 @@
                 </div>
             </div>
 
+            <div
+                style="background: #fff3cd; border: 2px solid #ffc107; border-radius: 10px; padding: 15px; margin-bottom: 20px; display: flex; align-items: center; gap: 15px;">
+                <input type="checkbox" id="skip-main-schedule" style="width: 20px; height: 20px; cursor: pointer;"
+                    onchange="toggleMainScheduleFields()">
+                <label for="skip-main-schedule"
+                    style="margin: 0; cursor: pointer; font-weight: bold; color: #856404; font-size: 16px; text-transform: uppercase; letter-spacing: 0.5px;">Skip
+                    Main Schedule (Extra Class Only)</label>
+            </div>
+
             <div class="date-controls" id="date-controls">
                 <div class="form-group">
                     <label for="month">Month</label>
@@ -583,15 +596,6 @@
                         </div>
                     </div>
                 </div>
-            </div>
-
-            <div
-                style="background: #fff3cd; border: 2px solid #ffc107; border-radius: 10px; padding: 15px; margin-bottom: 20px; display: flex; align-items: center; gap: 15px;">
-                <input type="checkbox" id="skip-main-schedule" style="width: 20px; height: 20px; cursor: pointer;"
-                    onchange="toggleMainScheduleFields()">
-                <label for="skip-main-schedule"
-                    style="margin: 0; cursor: pointer; font-weight: bold; color: #856404; font-size: 16px; text-transform: uppercase; letter-spacing: 0.5px;">Skip
-                    Main Schedule (Extra Class Only)</label>
             </div>
 
             <div class="checkbox-group">
@@ -957,6 +961,10 @@
                 row.className = 'fade-in';
                 if (event.isExtra) {
                     row.classList.add('extra-class');
+                    // Add skip-mode class if skip main schedule is checked
+                    if (skipMainSchedule) {
+                        row.classList.add('skip-mode');
+                    }
                 }
                 row.style.animationDelay = (index * 0.1) + 's';
 
