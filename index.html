@@ -641,7 +641,10 @@
                 </div>
             </div>
 
-            <button class="btn" onclick="generateSchedule()">🎯 Generate Schedule</button>
+            <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+                <button class="btn" onclick="generateSchedule()">🎯 Generate Schedule</button>
+                <button class="btn" style="background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);" onclick="resetForm()">🔄 Reset Form</button>
+            </div>
         </div>
 
         <div class="schedule-section">
@@ -982,8 +985,57 @@
             });
         }
 
+        function resetForm() {
+            // Reset text inputs
+            document.getElementById('nama').value = '';
+            document.getElementById('level').value = '';
+            document.getElementById('subjek').value = '';
+
+            // Reset date controls to current date
+            setCurrentDate();
+
+            // Reset day of week to Tuesday (default)
+            document.getElementById('day').value = '2';
+
+            // Reset time pickers to default values
+            document.getElementById('start-hour').value = '03';
+            document.getElementById('start-minute').value = '00';
+            document.getElementById('start-ampm').value = 'PM';
+            document.getElementById('end-hour').value = '04';
+            document.getElementById('end-minute').value = '30';
+            document.getElementById('end-ampm').value = 'PM';
+
+            // Uncheck and hide extra class section
+            document.getElementById('extra-class').checked = false;
+            document.getElementById('extra-day-controls').classList.remove('show');
+
+            // Clear all extra entries
+            document.getElementById('extra-entries-container').innerHTML = '';
+            extraClassCounter = 0;
+
+            // Uncheck skip main schedule
+            document.getElementById('skip-main-schedule').checked = false;
+            toggleMainScheduleFields();
+
+            // Reset global extra class settings
+            document.getElementById('global-start-week').value = '1';
+            document.getElementById('global-frequency').value = 'all';
+
+            // Reset schedule table to default
+            const tbody = document.getElementById('schedule-body');
+            tbody.innerHTML = '<tr><td>1</td><td>Click "Generate Schedule" to populate</td><td>03:00PM-4:30PM</td></tr>';
+
+            // Update display info
+            updateDisplayInfo();
+        }
+
         function exportToPDF() {
             window.print();
+
+            // Auto reset after PDF generation
+            setTimeout(function() {
+                resetForm();
+            }, 500);
         }
 
         function setCurrentDate() {
